@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Principal Component Analysis (PCA) &#8212; Statistical backgrounds for gene mapping</title>
+    <title>Principal Component Analysis &#8212; Statistical backgrounds for gene mapping</title>
   
   
   
@@ -220,7 +220,7 @@
 
 
 </ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Correlation Between Variables</span></p>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Latent Structures in Data</span></p>
 <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="factor_analysis.html">Factor Analysis</a></li>
 
@@ -228,7 +228,7 @@
 
 
 
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Principal Component Analysis (PCA)</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Principal Component Analysis</a></li>
 
 
 
@@ -236,9 +236,6 @@
 
 
 
-</ul>
-<p aria-level="2" class="caption" role="heading"><span class="caption-text">Latent Structure in Genome</span></p>
-<ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="hidden_Markov_model.html">Hidden Markov Model (HMM)</a></li>
 
 
@@ -557,7 +554,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Principal Component Analysis (PCA)</h1>
+    <h1>Principal Component Analysis</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -567,14 +564,14 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Principal Component Analysis (PCA)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Principal Component Analysis</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#graphical-summary">Graphical Summary</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-formula">Key Formula</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-factor-analysis">PCA and Factor Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-regression">PCA and Regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-explained-by-principal-components">Variance Explained by Principal Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigen-decomposition-and-variance-explained">Eigen Decomposition and Variance Explained</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#terminology">Terminology</a></li>
 </ul>
 </li>
@@ -606,9 +603,9 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis-pca">
-<h1>Principal Component Analysis (PCA)<a class="headerlink" href="#principal-component-analysis-pca" title="Link to this heading">#</a></h1>
-<p>PCA finds the directions in your data where the points are most spread out (maximum variance), allowing you to summarize high-dimensional data using just a few key axes of variation.</p>
+  <section class="tex2jax_ignore mathjax_ignore" id="principal-component-analysis">
+<h1>Principal Component Analysis<a class="headerlink" href="#principal-component-analysis" title="Link to this heading">#</a></h1>
+<p>Principal Component Analysis (PCA) finds the directions in your data where the points are most spread out (maximum variance), allowing you to summarize high-dimensional data using just a few key axes of variation.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="graphical-summary">
 <h1>Graphical Summary<a class="headerlink" href="#graphical-summary" title="Link to this heading">#</a></h1>
@@ -663,8 +660,8 @@ document.write(`
 <h2>Scaling<a class="headerlink" href="#scaling" title="Link to this heading">#</a></h2>
 <p>PCA is sensitive to the scaling of the variables. Mathematically this sensitivity comes from the way a rescaling changes the sample‑covariance matrix that PCA diagonalises. So in practice one needs to scale (both centered and unit variance) the matrix before performing PCA.</p>
 </section>
-<section id="variance-explained-by-principal-components">
-<h2>Variance Explained by Principal Components<a class="headerlink" href="#variance-explained-by-principal-components" title="Link to this heading">#</a></h2>
+<section id="eigen-decomposition-and-variance-explained">
+<h2>Eigen Decomposition and Variance Explained<a class="headerlink" href="#eigen-decomposition-and-variance-explained" title="Link to this heading">#</a></h2>
 <p>When <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> is scaled (columns have zero mean and unit variance), <span class="math notranslate nohighlight">\(\mathbf{X}^T\mathbf{X}/(N-1)\)</span> is the sample covariance matrix <span class="math notranslate nohighlight">\(\text{Cov}(\mathbf{X})\)</span>. Thus, PCA via eigendecomposition is often described as finding the eigenvectors of the covariance matrix. The eigenvectors <span class="math notranslate nohighlight">\(\mathbf{W}\)</span> are the principal directions, and the eigenvalues represent the variance explained along each direction:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -914,7 +911,7 @@ PC5: 1.99%
 <li><p>In Admixture (and Structure method), for each individual at a specific SNP, a “personal” expected allele frequency actually is reflected by their ancestry vector and the population allele frequencies</p></li>
 <li><p>In PCA, it lacks an interpretation of what the linear combination of <span class="math notranslate nohighlight">\(p\)</span> variants represent, but it is similar to have an imaginary “ancestry” represented by the <span class="math notranslate nohighlight">\(w_k\)</span>.</p></li>
 </ul>
-<p>For a detailed relationship between between PCA and Structure, please refer to <a class="reference external" href="https://web.stanford.edu/group/pritchardlab/HGbook/ReleaseV1.1/HGBook-V1.1-ch3.1.pdf">HGBook</a> (box on page 190-192). Structure and Admixture are two methods but from different perspective (Bayesian versus frequentist, which we will discuss later <a class="reference external" href="https://statfungen.github.io/statgen-prerequisites/Bayesian_frequentist.html">here</a>).</p>
+<p>For a detailed relationship between between PCA and Structure, please refer to Jonathan Prichard’s <a class="reference external" href="https://web.stanford.edu/group/pritchardlab/HGbook/ReleaseV1.1/HGBook-V1.1-ch3.1.pdf">HGBook</a> (box on page 190-192). Structure and Admixture are two methods but from different perspective (Bayesian versus frequentist, which we will discuss later <a class="reference external" href="https://statfungen.github.io/statgen-prerequisites/Bayesian_frequentist.html">here</a>).</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the range of PC1 scores</span>
@@ -1230,14 +1227,14 @@ Correlation between PC1 loadings and freq differences (scaled data): 0.9985
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Principal Component Analysis (PCA)</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Principal Component Analysis</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#graphical-summary">Graphical Summary</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-formula">Key Formula</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-factor-analysis">PCA and Factor Analysis</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#pca-and-regression">PCA and Regression</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#scaling">Scaling</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#variance-explained-by-principal-components">Variance Explained by Principal Components</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#eigen-decomposition-and-variance-explained">Eigen Decomposition and Variance Explained</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#terminology">Terminology</a></li>
 </ul>
 </li>
