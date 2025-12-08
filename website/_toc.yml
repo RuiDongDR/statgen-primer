@@ -70,12 +70,12 @@ parts:
       - file: Bayes_factor
       - file: p_value
   
-  - caption: Bayesian Model
+  - caption: Bayesian Regression Models
     chapters:
         - file: Bayesian_normal_mean_model
         - file: Bayesian_multivariate_normal_mean_model
   
-  - caption: Multiple Bayesian models
+  - caption: Multiple Bayesian Models
     chapters:
         - file: Bayesian_model_comparison
         - file: Bayesian_mixture_model
