@@ -39,7 +39,7 @@ parts:
   
   - caption: Random Effects Models
     chapters:
-      - file: random_effect
+      - file: random_effects
       - file: proportion_of_variance_explained
 
   - caption: Linear Mixed Model
@@ -55,7 +55,7 @@ parts:
   - caption: Meta-analysis
     chapters:
       - file: meta_analysis_fixed_effect
-      - file: meta_analysis_random_effect
+      - file: meta_analysis_random_effects
   
   - caption: Likelihood
     chapters:
