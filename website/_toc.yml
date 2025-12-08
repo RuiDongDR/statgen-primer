@@ -24,13 +24,10 @@ parts:
     chapters:
       - file: genetic_relationship_matrix
   
-  - caption: Correlation Between Variables
+  - caption: Latent Structures in Data
     chapters:
       - file: factor_analysis
       - file: principal_component_analysis
-  
-  - caption: Latent Structure in Genome
-    chapters:
       - file: hidden_Markov_model
       
   - caption: Fixed Effects Models
