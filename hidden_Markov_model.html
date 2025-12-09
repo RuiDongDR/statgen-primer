@@ -57,6 +57,8 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'hidden_Markov_model';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -565,7 +567,14 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Hidden Markov Model (HMM)</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#graphical-summary">Graphical Summary</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-formula">Key Formula</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chain">Markov Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-problem">Inference Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-probability">Forward Probability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-probability">Backward Probability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">Posterior Distribution</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
 
@@ -581,6 +590,7 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="hidden-markov-model-hmm">
 <h1>Hidden Markov Model (HMM)<a class="headerlink" href="#hidden-markov-model-hmm" title="Link to this heading">#</a></h1>
+<p>A Hidden Markov Model (HMM) is a statistical model for sequential data where unobservable states (e.g., underlying ancestry) evolve over time according to a Markov chain, and at each time point we observe noisy or indirect measurements that depend on the current hidden state.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="graphical-summary">
 <h1>Graphical Summary<a class="headerlink" href="#graphical-summary" title="Link to this heading">#</a></h1>
@@ -588,11 +598,79 @@ document.write(`
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="key-formula">
 <h1>Key Formula<a class="headerlink" href="#key-formula" title="Link to this heading">#</a></h1>
-<p>key formula sentence</p>
+<p>The complete probability of any sequence of hidden states and observations in an HMM is given by:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}(z_{1:T}, x_{1:T}) = \mathbb{P}(z_1) \prod_{t=2}^{T} \mathbb{P}(z_t | z_{t-1}) \prod_{t=1}^{T} \mathbb{P}(x_t | z_t)
+\]</div>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(z_t\)</span> = hidden state at time <span class="math notranslate nohighlight">\(t\)</span> (what’s happening behind the scenes)</p></li>
+<li><p><span class="math notranslate nohighlight">\(x_t\)</span> = observation at time <span class="math notranslate nohighlight">\(t\)</span> (what you can actually see)</p></li>
+<li><p><span class="math notranslate nohighlight">\(z_{1:T}\)</span> = sequence of hidden states from time 1 to <span class="math notranslate nohighlight">\(T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(x_{1:T}\)</span> = sequence of observations from time 1 to <span class="math notranslate nohighlight">\(T\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span> = total number of time steps</p></li>
+</ul>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="technical-details">
 <h1>Technical Details<a class="headerlink" href="#technical-details" title="Link to this heading">#</a></h1>
-<p>techinical details here</p>
+<section id="markov-chain">
+<h2>Markov Chain<a class="headerlink" href="#markov-chain" title="Link to this heading">#</a></h2>
+<p>A Markov chain is a sequence of random variables <span class="math notranslate nohighlight">\(z_1, z_2, \ldots, z_T\)</span> where the future state depends only on the current state, not on the history:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}(z_{t+1} | z_1, z_2, \ldots, z_t) = \mathbb{P}(z_{t+1} | z_t)
+\]</div>
+<p>This is the <strong>Markov property</strong>. The chain is fully specified by initial distribution <span class="math notranslate nohighlight">\(\mathbb{P}(z_1)\)</span> and transition probabilities <span class="math notranslate nohighlight">\(\mathbb{P}(z_{t+1} | z_t)\)</span>.</p>
+<p>An HMM extends this by adding observations: the states <span class="math notranslate nohighlight">\(z_t\)</span> are hidden (unobservable), but at each time <span class="math notranslate nohighlight">\(t\)</span> we observe <span class="math notranslate nohighlight">\(x_t\)</span> that depends only on the current hidden state <span class="math notranslate nohighlight">\(z_t\)</span>. This is called <strong>output independence</strong>.</p>
+</section>
+<section id="inference-problem">
+<h2>Inference Problem<a class="headerlink" href="#inference-problem" title="Link to this heading">#</a></h2>
+<p>Given a sequence of observations <span class="math notranslate nohighlight">\(x_{1:T}\)</span>, we want to infer the hidden states. Specifically, we want to compute the posterior distribution <span class="math notranslate nohighlight">\(\mathbb{P}(z_t | x_{1:T})\)</span> for each time <span class="math notranslate nohighlight">\(t\)</span>. The forward-backward algorithm solves this efficiently using dynamic programming.</p>
+</section>
+<section id="forward-probability">
+<h2>Forward Probability<a class="headerlink" href="#forward-probability" title="Link to this heading">#</a></h2>
+<p>The forward probability accumulates information from past observations.</p>
+<p><strong>Definition:</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_t(k) := \mathbb{P}(z_t = k, x_{1:t})
+\]</div>
+<p>Joint probability of state <span class="math notranslate nohighlight">\(k\)</span> at time <span class="math notranslate nohighlight">\(t\)</span> and all past observations.</p>
+<p><strong>Forward Recursion:</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\alpha_{t+1}(k) = \mathbb{P}(x_{t+1} | z_{t+1} = k) \sum_{j} \alpha_t(j) \cdot \mathbb{P}(z_{t+1} = k | z_t = j)
+\]</div>
+</section>
+<section id="backward-probability">
+<h2>Backward Probability<a class="headerlink" href="#backward-probability" title="Link to this heading">#</a></h2>
+<p>The backward probability accumulates information from future observations.</p>
+<p><strong>Definition:</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\beta_t(k) := \mathbb{P}(x_{t+1:T} | z_t = k)
+\]</div>
+<p>Probability of all future observations given state <span class="math notranslate nohighlight">\(k\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>.</p>
+<p><strong>Backward Recursion:</strong></p>
+<div class="math notranslate nohighlight">
+\[
+\beta_t(k) = \sum_{j} \mathbb{P}(z_{t+1} = j | z_t = k) \cdot \mathbb{P}(x_{t+1} | z_{t+1} = j) \cdot \beta_{t+1}(j)
+\]</div>
+</section>
+<section id="posterior-distribution">
+<h2>Posterior Distribution<a class="headerlink" href="#posterior-distribution" title="Link to this heading">#</a></h2>
+<p>By the Markov property, conditioning on <span class="math notranslate nohighlight">\(z_t\)</span> makes past and future observations independent:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}(z_t = k, x_{1:T}) = \mathbb{P}(z_t = k, x_{1:t}) \cdot \mathbb{P}(x_{t+1:T} | z_t = k) = \alpha_t(k) \cdot \beta_t(k)
+\]</div>
+<p>Thus, the posterior distribution is:</p>
+<div class="math notranslate nohighlight">
+\[
+\mathbb{P}(z_t = k | x_{1:T}) = \frac{\alpha_t(k) \cdot \beta_t(k)}{\sum_{k'} \alpha_t(k') \cdot \beta_t(k')}
+\]</div>
+<p>This answers: “Given all observations, what is the probability we were in state <span class="math notranslate nohighlight">\(k\)</span> at time <span class="math notranslate nohighlight">\(t\)</span>?”</p>
+</section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="example">
 <h1>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h1>
@@ -673,7 +751,14 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Hidden Markov Model (HMM)</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#graphical-summary">Graphical Summary</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#key-formula">Key Formula</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#markov-chain">Markov Chain</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#inference-problem">Inference Problem</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#forward-probability">Forward Probability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backward-probability">Backward Probability</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">Posterior Distribution</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
 </ul>
 
