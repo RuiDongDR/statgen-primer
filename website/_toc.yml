@@ -9,7 +9,7 @@ parts:
       - file: notations
       - file: popular_topics
   
-  - caption: Basic Concepts
+  - caption: Human Genetics Concepts
     chapters:
       - file: genotype_coding
       - file: minor_allele_frequency
@@ -23,12 +23,6 @@ parts:
   - caption: Correlation Between Individuals
     chapters:
       - file: genetic_relationship_matrix
-  
-  - caption: Latent Structures in Data
-    chapters:
-      - file: factor_analysis
-      - file: principal_component_analysis
-      - file: hidden_Markov_model
       
   - caption: Fixed Effects Models
     chapters:
@@ -80,4 +74,11 @@ parts:
         - file: Bayesian_model_comparison
         - file: Bayesian_mixture_model
 
+  - caption: Latent Structures in Data
+    chapters:
+      - file: factor_analysis
+      - file: principal_component_analysis
+      - file: hidden_Markov_model
+      
+  - caption: Population Genetics Theories
 
