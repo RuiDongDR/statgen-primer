@@ -9,7 +9,7 @@ parts:
       - file: notations
       - file: popular_topics
   
-  - caption: Basic Concepts
+  - caption: Basic Genetics Concepts
     chapters:
       - file: genotype_coding
       - file: minor_allele_frequency
@@ -23,7 +23,7 @@ parts:
   - caption: Correlation Between Individuals
     chapters:
       - file: genetic_relationship_matrix
-  
+      
   - caption: Fixed Effects Models
     chapters:
       - file: ordinary_least_squares
@@ -56,14 +56,7 @@ parts:
       - file: likelihood
       - file: maximum_likelihood_estimation
       - file: likelihood_ratio
-      - file: expectation_maximum
   
-  - caption: Latent Structures in Data
-    chapters:
-      - file: factor_analysis
-      - file: principal_component_analysis
-      - file: hidden_Markov_model
-
   - caption: Bayesian Versus Frequentist
     chapters: 
       - file: Bayesian_frequentist
@@ -81,4 +74,9 @@ parts:
         - file: Bayesian_model_comparison
         - file: Bayesian_mixture_model
 
-
+  - caption: Latent Structures in Data
+    chapters:
+      - file: factor_analysis
+      - file: principal_component_analysis
+      - file: hidden_Markov_model
+      
