@@ -656,7 +656,6 @@ document.write(`
 \mathbb{P}(z_t, x_{1:T}) = \underbrace{\mathbb{P}(z_t, x_{1:t})}_{\text{past}} \times \underbrace{\mathbb{P}(x_{t+1:T} | z_t)}_{\text{future}}
 \]</div>
 <p>The forward-backward algorithm (introduced in the next section) exploits this factorization: instead of considering all <span class="math notranslate nohighlight">\(K^T\)</span> possible state sequences at once, we solve two simpler subproblems (forward and backward passes) and combine their results.</p>
-<p>The forward-backward algorithm (introduced in the next section) exploits this factorization: instead of considering all <span class="math notranslate nohighlight">\(K^T\)</span> possible state sequences at once, we solve two simpler subproblems (forward and backward passes) and combine their results.</p>
 <p><strong>Our inference goal</strong> is to compute <span class="math notranslate nohighlight">\(\mathbb{P}(z_t | x_{1:T})\)</span> for each time point <span class="math notranslate nohighlight">\(t\)</span> using Bayes rule: <span class="math notranslate nohighlight">\(\mathbb{P}(z_t | x_{1:T}) \propto \mathbb{P}(z_t, x_{1:T})\)</span>, which gives us the posterior probability distribution over hidden states given all available observations.</p>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="technical-details">
