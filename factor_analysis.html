@@ -392,7 +392,6 @@
 
 
 
-
 <li class="toctree-l1"><a class="reference internal" href="Bayesian_mixture_model.html">Bayesian Mixture Model</a></li>
 
 
@@ -578,8 +577,8 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indeterminacy-of-matrix-decomposition">Indeterminacy of Matrix Decomposition</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-constraints">Common Constraints</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-admixture-analysis-example-1-in-the-next-section">Constraints in Admixture Analysis (Example 1 in the next section)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-non-negative-matrix-factorization-example-2-in-the-next-section">Constraints in Non-negative Matrix Factorization (Example 2 in the next section)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-admixture-analysis">Constraints in Admixture Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-non-negative-matrix-factorization">Constraints in Non-negative Matrix Factorization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-principal-component-analysis">Constraints in Principal Component Analysis</a></li>
 </ul>
 </li>
@@ -588,19 +587,14 @@ document.write(`
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-admixture-analysis-using-admixture">Example 1: Admixture Analysis using ADMIXTURE</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-data">Generate Data</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-variant-frequencies-in-ancestral-populations-mathbf-f">Step 1: Define variant frequencies in ancestral populations (<span class="math notranslate nohighlight">\(\mathbf{F}\)</span>)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-individuals-with-different-ancestry-proportions-mathbf-l">Step 2: Create individuals with different ancestry proportions (<span class="math notranslate nohighlight">\(\mathbf{L}\)</span>)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-generate-genotypes-based-on-ancestry-mathbf-x-matrix">Step 3: Generate genotypes based on ancestry (<span class="math notranslate nohighlight">\(\mathbf{X}\)</span> matrix)</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-admixture-analysis-using-admixture">Example 1 – Admixture Analysis using ADMIXTURE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-for-mathbf-l-and-mathbf-f-using-admixture">Solve for <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> using ADMIXTURE</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-estimated-vs-true-parameters-and-visualize-ancestry-proportions">Compare Estimated vs True Parameters and Visualize Ancestry Proportions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-exploratory-factor-analysis-in-gene-expression">Example 2: Exploratory Factor Analysis in Gene Expression</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Generate Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-exploratory-factor-analysis-in-gene-expression">Example 2 – Exploratory Factor Analysis in Gene Expression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-factor-matrix-factorization">Perform Factor Matrix Factorization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nfm-results">NFM Results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruct-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">Reconstruct based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization</a></li>
@@ -658,8 +652,8 @@ document.write(`
 <section id="common-constraints">
 <h2>Common Constraints<a class="headerlink" href="#common-constraints" title="Link to this heading">#</a></h2>
 <p>The estimated factors and loadings must often satisfy domain-specific constraints to ensure they are biologically or statistically meaningful. The specific constraints depend on the application context.</p>
-<section id="constraints-in-admixture-analysis-example-1-in-the-next-section">
-<h3>Constraints in Admixture Analysis (Example 1 in the next section)<a class="headerlink" href="#constraints-in-admixture-analysis-example-1-in-the-next-section" title="Link to this heading">#</a></h3>
+<section id="constraints-in-admixture-analysis">
+<h3>Constraints in Admixture Analysis<a class="headerlink" href="#constraints-in-admixture-analysis" title="Link to this heading">#</a></h3>
 <p>In the admixture analysis, we consider the problem of <span class="math notranslate nohighlight">\(N\)</span> individuals that comes from <span class="math notranslate nohighlight">\(k\)</span> ancestries, and <span class="math notranslate nohighlight">\(p\)</span> is the number of genetic variants.</p>
 <p><span class="math notranslate nohighlight">\(\mathbf{L}\)</span>(<span class="math notranslate nohighlight">\(k \times N\)</span>) is the proportion of each ancestry for each individual; <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> (<span class="math notranslate nohighlight">\(k \times p\)</span>) is allele frequency of each variant in each ancestry.</p>
 <ul class="simple">
@@ -672,8 +666,8 @@ document.write(`
 </li>
 </ul>
 </section>
-<section id="constraints-in-non-negative-matrix-factorization-example-2-in-the-next-section">
-<h3>Constraints in Non-negative Matrix Factorization (Example 2 in the next section)<a class="headerlink" href="#constraints-in-non-negative-matrix-factorization-example-2-in-the-next-section" title="Link to this heading">#</a></h3>
+<section id="constraints-in-non-negative-matrix-factorization">
+<h3>Constraints in Non-negative Matrix Factorization<a class="headerlink" href="#constraints-in-non-negative-matrix-factorization" title="Link to this heading">#</a></h3>
 <p>Non-negative matrix factorization (NMF or NNMF) is a group of algorithms to factorize a matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span> into two matrices <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{L}\)</span>, with the property that all three matrices have no negative elements.</p>
 <div class="math notranslate nohighlight">
 \[
@@ -718,16 +712,12 @@ document.write(`
 <section class="tex2jax_ignore mathjax_ignore" id="example">
 <h1>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h1>
 <section id="example-1-admixture-analysis-using-admixture">
-<h2>Example 1: Admixture Analysis using ADMIXTURE<a class="headerlink" href="#example-1-admixture-analysis-using-admixture" title="Link to this heading">#</a></h2>
+<h2>Example 1 – Admixture Analysis using ADMIXTURE<a class="headerlink" href="#example-1-admixture-analysis-using-admixture" title="Link to this heading">#</a></h2>
 <p>Human populations have genetic diversity shaped by evolutionary history and migration patterns. Different populations often carry different genetic variants at various frequencies due to their geographic origin and ancestry. A key question in population genetics is: <strong>given an individual’s genotypes at many genetic markers, can we infer what proportion of their ancestry comes from different ancestral populations?</strong> This is particularly important in admixed populations, where individuals have ancestry from multiple sources. Understanding ancestry composition helps us understand human evolution, control for confounding in medical studies, and interpret genetic variation in diverse populations.</p>
-<section id="generate-data">
-<h3>Generate Data<a class="headerlink" href="#generate-data" title="Link to this heading">#</a></h3>
-<p>Like we did in other notebooks, let’s first simulate the data given the generative model of truth, i.e., to mimic the way that <strong>nature creates admixed individuals</strong>.</p>
-<p>Imagine we have two ancestral populations. In reality, different populations have evolved in different geographic regions, and thus they carry different genetic variants at different frequencies. Let’s start with assuming that in our two ancestral populations, the frequencies of genetic markers are very different from each other. We will represent these population-specific marker frequencies in a matrix called <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> (the allele frequency matrix).</p>
-<p>Next, we create individuals with mixed ancestry. Some individuals might come purely from one ancestral population, while others might be mixtures of the two populations. We represent each individual’s ancestry proportions in a matrix called <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> (the ancestry proportion matrix). For example, an individual might be 60% from Population 1 and 40% from Population 2.</p>
-<p>Finally, given an individual’s ancestry composition (<span class="math notranslate nohighlight">\(\mathbf{L}\)</span>) and the population marker frequencies (<span class="math notranslate nohighlight">\(\mathbf{F}\)</span>), we can generate that individual’s genotypes. By combining the ancestry proportions with the population frequencies, we can simulate realistic genetic data.</p>
-<section id="step-1-define-variant-frequencies-in-ancestral-populations-mathbf-f">
-<h4>Step 1: Define variant frequencies in ancestral populations (<span class="math notranslate nohighlight">\(\mathbf{F}\)</span>)<a class="headerlink" href="#step-1-define-variant-frequencies-in-ancestral-populations-mathbf-f" title="Link to this heading">#</a></h4>
+<section id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
+<p>To study admixture, we first simulate data by mimicking how nature creates admixed individuals.</p>
+<p><strong>Allele Frequency Matrix (<span class="math notranslate nohighlight">\(\mathbf{F}\)</span>)</strong>: Represents the genetic “fingerprints” of ancestral populations. Each entry defines the frequency of a genetic variant within a specific population. We assume these frequencies differ due to geographic isolation and drift.</p>
 <p>We start by assuming that two ancestral populations have very distinct marker frequencies. We represent these population-specific allele frequencies in matrix <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>, where <span class="math notranslate nohighlight">\(\mathbf{F}[k, j]\)</span> = frequency of marker <span class="math notranslate nohighlight">\(j\)</span> in population <span class="math notranslate nohighlight">\(k\)</span>.</p>
 <p>The key insight is that the two populations differ substantially at these markers, making them genetically distinguishable.</p>
 <div class="cell docutils container">
@@ -774,9 +764,7 @@ document.write(`
 </table>
 </div></div>
 </div>
-</section>
-<section id="step-2-create-individuals-with-different-ancestry-proportions-mathbf-l">
-<h4>Step 2: Create individuals with different ancestry proportions (<span class="math notranslate nohighlight">\(\mathbf{L}\)</span>)<a class="headerlink" href="#step-2-create-individuals-with-different-ancestry-proportions-mathbf-l" title="Link to this heading">#</a></h4>
+<p><strong>Ancestry Proportion Matrix (<span class="math notranslate nohighlight">\(\mathbf{L}\)</span>)</strong>: Represents the “composition” of each individual. For example, an individual’s row might indicate they are 60% Population A and 40% Population B.</p>
 <p>Now we create fifty individuals with different ancestry mixtures:</p>
 <ul class="simple">
 <li><p><strong>Individuals 1-15</strong>: Pure ancestry from Population 1</p></li>
@@ -811,15 +799,12 @@ document.write(`
 </div>
 </div>
 </div>
-</section>
-<section id="step-3-generate-genotypes-based-on-ancestry-mathbf-x-matrix">
-<h4>Step 3: Generate genotypes based on ancestry (<span class="math notranslate nohighlight">\(\mathbf{X}\)</span> matrix)<a class="headerlink" href="#step-3-generate-genotypes-based-on-ancestry-mathbf-x-matrix" title="Link to this heading">#</a></h4>
-<p>The crucial insight is that <strong>an individual’s genotype depends on their ancestry</strong>. Given:</p>
-<ul class="simple">
-<li><p>An individual’s ancestry proportions (row of <span class="math notranslate nohighlight">\(\mathbf{L}\)</span>)</p></li>
-<li><p>The allele frequencies in each population (columns of <span class="math notranslate nohighlight">\(\mathbf{F}\)</span>)</p></li>
-</ul>
-<p>We can calculate the expected allele frequency for that individual at each marker as a weighted average:</p>
+<p>Now we simulate the genotype data, which is a function of their specific ancestry mix (<span class="math notranslate nohighlight">\(\mathbf{L}\)</span>) and the global allele frequencies of those ancestors (<span class="math notranslate nohighlight">\(\mathbf{F}\)</span>):</p>
+<div class="math notranslate nohighlight">
+\[
+\text{Genotypes} \approx \mathbf{L}^T \times \mathbf{F}
+\]</div>
+<p>This was done by calculating the expected allele frequency for that individual at each marker as a weighted average:</p>
 <div class="math notranslate nohighlight">
 \[
 p_{ij} = \sum_{k=1}^{K} l_{ki} \times f_{kj}
@@ -858,18 +843,17 @@ p_{ij} = \sum_{k=1}^{K} l_{ki} \times f_{kj}
 	<tr><th></th><th scope=col>SNP1</th><th scope=col>SNP2</th><th scope=col>SNP3</th><th scope=col>SNP4</th><th scope=col>SNP5</th><th scope=col>SNP6</th><th scope=col>SNP7</th><th scope=col>SNP8</th><th scope=col>SNP9</th><th scope=col>SNP10</th><th scope=col>⋯</th><th scope=col>SNP91</th><th scope=col>SNP92</th><th scope=col>SNP93</th><th scope=col>SNP94</th><th scope=col>SNP95</th><th scope=col>SNP96</th><th scope=col>SNP97</th><th scope=col>SNP98</th><th scope=col>SNP99</th><th scope=col>SNP100</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>IND1</th><td>1</td><td>2</td><td>1</td><td>2</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>IND1</th><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
 	<tr><th scope=row>IND2</th><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>IND3</th><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+	<tr><th scope=row>IND3</th><td>2</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
 </tbody>
 </table>
 </div></div>
 </div>
 </section>
-</section>
 <section id="solve-for-mathbf-l-and-mathbf-f-using-admixture">
 <h3>Solve for <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> using ADMIXTURE<a class="headerlink" href="#solve-for-mathbf-l-and-mathbf-f-using-admixture" title="Link to this heading">#</a></h3>
-<p>Now comes the interesting part! We have the genotype matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but in reality, we don’t know the true <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> matrices. We need to <strong>estimate</strong> them from the data using the ADMIXTURE algorithm.</p>
+<p>Now comes the interesting part! We observe the genotype matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but in reality, we don’t know the true <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> matrices. We need to <strong>estimate</strong> them from the data using the ADMIXTURE algorithm.</p>
 <p>The ADMIXTURE algorithm is based on maximum likelihood estimation. It finds the <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> matrices that maximize the probability of observing the genotype data <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p>
 <p><strong>Constraints:</strong></p>
 <ul class="simple">
@@ -1011,11 +995,11 @@ p_{ij} = \sum_{k=1}^{K} l_{ki} \times f_{kj}
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running ADMIXTURE (EM algorithm) (only first five iterations)...
 Iteration | Log-likelihood | Change
 -----------------------------------------
-        1 |       -6717.24 | -
-        2 |       -6640.32 | +76.911938
-        3 |       -6505.67 | +134.657908
-        4 |       -6286.42 | +219.247961
-        5 |       -5970.80 | +315.618363
+        1 |       -6796.52 | -
+        2 |       -6772.95 | +23.566719
+        3 |       -6728.39 | +44.556606
+        4 |       -6648.62 | +79.767643
+        5 |       -6511.89 | +136.730035
 </pre></div>
 </div>
 </div>
@@ -1035,11 +1019,6 @@ Iteration | Log-likelihood | Change
 <span class="w">  </span><span class="n">F_estimated</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">F_estimated</span><span class="p">[</span><span class="nf">c</span><span class="p">(</span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="p">]</span>
 <span class="w">  </span><span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Note: Population labels were switched during estimation (expected behavior)\n\n&quot;</span><span class="p">)</span>
 <span class="p">}</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Note: Population labels were switched during estimation (expected behavior)
 </pre></div>
 </div>
 </div>
@@ -1067,18 +1046,40 @@ Iteration | Log-likelihood | Change
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/2779243d8f127f7a91b4319773121925711cdb4d05ff619a8711403161e7dcc6.png"><img alt="_images/2779243d8f127f7a91b4319773121925711cdb4d05ff619a8711403161e7dcc6.png" src="_images/2779243d8f127f7a91b4319773121925711cdb4d05ff619a8711403161e7dcc6.png" style="width: 420px; height: 420px;" />
+<a class="reference internal image-reference" href="_images/7d50bb27cb482891e106ab18ce0d97e9e4abfebbb120868d8059965ceace7931.png"><img alt="_images/7d50bb27cb482891e106ab18ce0d97e9e4abfebbb120868d8059965ceace7931.png" src="_images/7d50bb27cb482891e106ab18ce0d97e9e4abfebbb120868d8059965ceace7931.png" style="width: 420px; height: 420px;" />
 </a>
 </div>
 </div>
 </section>
 </section>
 <section id="example-2-exploratory-factor-analysis-in-gene-expression">
-<h2>Example 2: Exploratory Factor Analysis in Gene Expression<a class="headerlink" href="#example-2-exploratory-factor-analysis-in-gene-expression" title="Link to this heading">#</a></h2>
+<h2>Example 2 – Exploratory Factor Analysis in Gene Expression<a class="headerlink" href="#example-2-exploratory-factor-analysis-in-gene-expression" title="Link to this heading">#</a></h2>
 <p>Suppose you measure expression levels of five genes across 100 tissue samples. You notice that some genes tend to go up or down together—but why? Could it be because they’re controlled by the same underlying biological pathway? In this example, we’ll explore how factor analysis helps us uncover those hidden pathways. We’ll start by letting the data show us what structure exists (exploratory analysis), and then we’ll test a specific theory about which genes belong to which pathways – showing how this detective work can reveal the invisible biological forces driving patterns in your data. Here we perform non-negative matrix factorization on the observed data to reveal the underlying two pathways.</p>
 <p>First, let’s create toy data with a known structure where we have two latent biological pathways affecting gene expression.</p>
 <section id="id1">
-<h3>Generate Data<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>Setup<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;NMF&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message:
+“dependency ‘Biobase’ is not available”
+also installing the dependencies ‘iterators’, ‘registry’, ‘rngtools’, ‘cluster’, ‘gridBase’, ‘foreach’, ‘doParallel’, ‘BiocManager’
+
+
+Warning message in install.packages(&quot;NMF&quot;):
+“installation of package ‘NMF’ had non-zero exit status”
+Updating HTML index of packages in &#39;.Library&#39;
+
+Making &#39;packages.html&#39; ...
+ done
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">rm</span><span class="p">(</span><span class="n">list</span><span class="o">=</span><span class="nf">ls</span><span class="p">())</span>
@@ -1116,26 +1117,13 @@ Iteration | Log-likelihood | Change
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data dimensions: 100 samples x 5 genes
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">library</span><span class="p">(</span><span class="n">NMF</span><span class="p">):</span> <span class="n">there</span> <span class="ow">is</span> <span class="n">no</span> <span class="n">package</span> <span class="n">called</span> <span class="err">‘</span><span class="n">NMF</span><span class="err">’</span>
+<span class="ne">Traceback</span>:
 
-First few rows of expression data:
+<span class="mi">1</span><span class="o">.</span> <span class="n">stop</span><span class="p">(</span><span class="n">packageNotFoundError</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">lib</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">call</span><span class="p">()))</span>
 </pre></div>
 </div>
-<div class="output text_html"><table class="dataframe">
-<caption>A matrix: 6 × 5 of type dbl</caption>
-<thead>
-	<tr><th></th><th scope=col>IL1</th><th scope=col>IL2</th><th scope=col>METAB1</th><th scope=col>METAB2</th><th scope=col>METAB3</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>Sample1</th><td>0.28</td><td>0.51</td><td>1.16</td><td>0.78</td><td>0.61</td></tr>
-	<tr><th scope=row>Sample2</th><td>0.35</td><td>0.35</td><td>1.15</td><td>1.95</td><td>1.00</td></tr>
-	<tr><th scope=row>Sample3</th><td>1.64</td><td>0.95</td><td>0.31</td><td>0.42</td><td>0.60</td></tr>
-	<tr><th scope=row>Sample4</th><td>2.33</td><td>3.82</td><td>0.44</td><td>0.22</td><td>0.98</td></tr>
-	<tr><th scope=row>Sample5</th><td>0.44</td><td>0.41</td><td>1.55</td><td>2.28</td><td>1.44</td></tr>
-	<tr><th scope=row>Sample6</th><td>4.68</td><td>4.98</td><td>2.93</td><td>2.16</td><td>2.58</td></tr>
-</tbody>
-</table>
-</div></div>
+</div>
 </div>
 </section>
 <section id="perform-factor-matrix-factorization">
@@ -1351,8 +1339,8 @@ First few rows of expression data:
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#technical-details">Technical Details</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#indeterminacy-of-matrix-decomposition">Indeterminacy of Matrix Decomposition</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#common-constraints">Common Constraints</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-admixture-analysis-example-1-in-the-next-section">Constraints in Admixture Analysis (Example 1 in the next section)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-non-negative-matrix-factorization-example-2-in-the-next-section">Constraints in Non-negative Matrix Factorization (Example 2 in the next section)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-admixture-analysis">Constraints in Admixture Analysis</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-non-negative-matrix-factorization">Constraints in Non-negative Matrix Factorization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#constraints-in-principal-component-analysis">Constraints in Principal Component Analysis</a></li>
 </ul>
 </li>
@@ -1361,19 +1349,14 @@ First few rows of expression data:
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-admixture-analysis-using-admixture">Example 1: Admixture Analysis using ADMIXTURE</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-data">Generate Data</a><ul class="nav section-nav flex-column">
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-1-define-variant-frequencies-in-ancestral-populations-mathbf-f">Step 1: Define variant frequencies in ancestral populations (<span class="math notranslate nohighlight">\(\mathbf{F}\)</span>)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-2-create-individuals-with-different-ancestry-proportions-mathbf-l">Step 2: Create individuals with different ancestry proportions (<span class="math notranslate nohighlight">\(\mathbf{L}\)</span>)</a></li>
-<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#step-3-generate-genotypes-based-on-ancestry-mathbf-x-matrix">Step 3: Generate genotypes based on ancestry (<span class="math notranslate nohighlight">\(\mathbf{X}\)</span> matrix)</a></li>
-</ul>
-</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-admixture-analysis-using-admixture">Example 1 – Admixture Analysis using ADMIXTURE</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#solve-for-mathbf-l-and-mathbf-f-using-admixture">Solve for <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> using ADMIXTURE</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#compare-estimated-vs-true-parameters-and-visualize-ancestry-proportions">Compare Estimated vs True Parameters and Visualize Ancestry Proportions</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-exploratory-factor-analysis-in-gene-expression">Example 2: Exploratory Factor Analysis in Gene Expression</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Generate Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-exploratory-factor-analysis-in-gene-expression">Example 2 – Exploratory Factor Analysis in Gene Expression</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-factor-matrix-factorization">Perform Factor Matrix Factorization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nfm-results">NFM Results</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruct-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">Reconstruct based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization</a></li>
