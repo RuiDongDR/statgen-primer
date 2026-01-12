@@ -330,7 +330,6 @@
 
 
 
-
 <li class="toctree-l1"><a class="reference internal" href="likelihood_ratio.html">Likelihood Ratio</a></li>
 
 
@@ -355,14 +354,13 @@
 
 
 
-
 <li class="toctree-l1"><a class="reference internal" href="Bayes_factor.html">Bayes Factor</a></li>
 
 
 
 
 
-<li class="toctree-l1"><a class="reference internal" href="p_value_and_Bayesian_hypothesis_testing.html">p-value and Bayesian Hypothesis Testing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="p_value_and_Bayesian_hypothesis_testing.html"><span class="math notranslate nohighlight">\(p\)</span>-value and Bayesian Hypothesis Testing</a></li>
 
 
 
@@ -379,9 +377,7 @@
 
 
 
-
 <li class="toctree-l1"><a class="reference internal" href="Bayesian_multivariate_normal_mean_model.html">Bayesian Multivariate Normal Mean Model</a></li>
-
 
 
 
@@ -634,10 +630,10 @@ document.write(`
 \[
 \mathcal{L}(\text{M}\mid\text{D}_1) = P(\text{D}_1|\text{M})
 \]</div>
-<p>For multiple <strong>independent</strong> observations <span class="math notranslate nohighlight">\(\text{D} = \{\text{D}_1,\dots,\text{D}_N \}\)</span>, the joint probability of multiple independent samples is the product of their individual probabilities:</p>
+<p>For multiple <strong>independent</strong> observations <span class="math notranslate nohighlight">\(\textbf{D} = \{\text{D}_1,\dots,\text{D}_N \}\)</span>, the joint probability of multiple independent samples is the product of their individual probabilities:</p>
 <div class="math notranslate nohighlight">
 \[
-\mathcal{L}(\text{M}\mid\text{D}) = \prod_{i=1}^{N} P(\text{D}_i|\text{M})
+\mathcal{L}(\text{M}\mid\textbf{D}) = \prod_{i=1}^{N} P(\text{D}_i|\text{M})
 \]</div>
 </section>
 <section id="log-likelihood">
@@ -647,7 +643,7 @@ document.write(`
 \[
 \ell(\text{M}|\text{D}) = \log \mathcal{L}(\text{M}|\text{D})
 \]</div>
-<p>The <span class="math notranslate nohighlight">\(\log\)</span> transformation converts products to sums, making calculations easier and preventing numerical underflow with very small probabilities.</p>
+<p>The <span class="math notranslate nohighlight">\(\log\)</span> transformation is a monotonic function which converts products to sums, making calculations easier and preventing numerical underflow with very small probabilities.</p>
 <p>In this series of lectures, unless otherwise specified, we use <strong>log base e</strong>.</p>
 </section>
 </section>
@@ -883,15 +879,15 @@ document.write(`
 <span class="w">   </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x_vals</span><span class="p">,</span>
 <span class="w">   </span><span class="m">1</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">x_vals</span>
 <span class="w"> </span><span class="p">),</span>
-<span class="w"> </span><span class="n">Model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)),</span>
-<span class="w">                </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="p">))</span>
+<span class="w"> </span><span class="n">Model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">x_vals</span><span class="p">)),</span>
+<span class="w">                </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="p">))</span>
 <span class="p">)</span>
 
 <span class="c1"># Add dashed lines with plain labels</span>
 <span class="n">p1b</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">p1a</span><span class="w"> </span><span class="o">+</span>
 <span class="w"> </span><span class="nf">geom_line</span><span class="p">(</span><span class="n">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">lines_df</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Genotype</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Phenotype</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Model</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Model</span><span class="p">),</span><span class="w"> </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w"> </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w"> </span><span class="nf">scale_linetype_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w"> </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w"> </span><span class="nf">scale_linetype_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w"> </span><span class="nf">theme</span><span class="p">(</span>
 <span class="w">   </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
 <span class="w">   </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span><span class="p">,</span>
@@ -906,7 +902,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/12c77b0a2a292f61bed451bcf338b1192d0b7e4828a4dea78cbfd0867bc01dff.png"><img alt="_images/12c77b0a2a292f61bed451bcf338b1192d0b7e4828a4dea78cbfd0867bc01dff.png" src="_images/12c77b0a2a292f61bed451bcf338b1192d0b7e4828a4dea78cbfd0867bc01dff.png" style="width: 420px; height: 420px;" />
+<a class="reference internal image-reference" href="_images/4aa210fdf6f1d188ac5b166ffec6e8bdca5a0d0434ada822577e26b191557d50.png"><img alt="_images/4aa210fdf6f1d188ac5b166ffec6e8bdca5a0d0434ada822577e26b191557d50.png" src="_images/4aa210fdf6f1d188ac5b166ffec6e8bdca5a0d0434ada822577e26b191557d50.png" style="width: 1200px; height: 720px;" />
 </a>
 </div>
 </div>
@@ -926,13 +922,13 @@ document.write(`
 <span class="c1"># Reshape to long format</span>
 <span class="n">df_long_lik</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">reshape2</span><span class="o">::</span><span class="nf">melt</span><span class="p">(</span><span class="n">df_likelihood</span><span class="p">,</span><span class="w"> </span><span class="n">id.vars</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Phenotype&quot;</span><span class="p">,</span><span class="w"> </span>
 <span class="w">                             </span><span class="n">variable.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Model&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">value.name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Density&quot;</span><span class="p">)</span>
-<span class="nf">levels</span><span class="p">(</span><span class="n">df_long_lik</span><span class="o">$</span><span class="n">Model</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="p">)</span>
+<span class="nf">levels</span><span class="p">(</span><span class="n">df_long_lik</span><span class="o">$</span><span class="n">Model</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="p">)</span>
 
 <span class="c1"># Plot the likelihood curves</span>
 <span class="n">p2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">df_long_lik</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Phenotype</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Density</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Model</span><span class="p">,</span><span class="w"> </span><span class="n">linetype</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Model</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w"> </span><span class="nf">geom_line</span><span class="p">(</span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w"> </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w"> </span><span class="nf">scale_linetype_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;beta = 0&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 0.5&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;beta = 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w"> </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;blue&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;red&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w"> </span><span class="nf">scale_linetype_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Model 1&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 2&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Model 3&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;dashed&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w"> </span><span class="nf">labs</span><span class="p">(</span>
 <span class="w">   </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Standardized Phenotype&quot;</span><span class="p">,</span>
 <span class="w">   </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Density&quot;</span>
@@ -962,7 +958,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c7e212bcb88e294112ad165aa08652ebac0513296494ab045c20bd8c5478e05c.png"><img alt="_images/c7e212bcb88e294112ad165aa08652ebac0513296494ab045c20bd8c5478e05c.png" src="_images/c7e212bcb88e294112ad165aa08652ebac0513296494ab045c20bd8c5478e05c.png" style="width: 420px; height: 420px;" />
+<a class="reference internal image-reference" href="_images/1d272801e2ea77ea8fbd3d9ec0a77892ecc20592eacb71cb2bb11c9e43f3d566.png"><img alt="_images/1d272801e2ea77ea8fbd3d9ec0a77892ecc20592eacb71cb2bb11c9e43f3d566.png" src="_images/1d272801e2ea77ea8fbd3d9ec0a77892ecc20592eacb71cb2bb11c9e43f3d566.png" style="width: 1200px; height: 720px;" />
 </a>
 </div>
 </div>
