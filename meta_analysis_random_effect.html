@@ -808,7 +808,7 @@ I^2 = \max\left(0, \frac{Q - (K-1)}{Q} \times 100\%\right)
 
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Heterogeneity Statistics:\n&quot;</span><span class="p">)</span>
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Q statistic:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;P-value for heterogeneity:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">p_heterogeneity</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
+<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;p-value for heterogeneity:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">p_heterogeneity</span><span class="p">,</span><span class="w"> </span><span class="m">4</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;I^2 statistic:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">I_squared</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;%\n\n&quot;</span><span class="p">)</span>
 
 <span class="kr">if</span><span class="p">(</span><span class="n">I_squared</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">25</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
@@ -822,7 +822,7 @@ I^2 = \max\left(0, \frac{Q - (K-1)}{Q} \times 100\%\right)
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Heterogeneity Statistics:
 Q statistic: 30.168 
-P-value for heterogeneity: 0 
+p-value for heterogeneity: 0 
 I^2 statistic: 96.7 %
 
 HETEROGENEITY DETECTED - Random-effects model is appropriate!
