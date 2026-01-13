@@ -584,16 +584,16 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-fine-mapping">Example 1 – Fine Mapping</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-prior-probabilities">Setting Prior Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">Prior Distribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-marginal-likelihoods-and-bayes-factors">Computing Marginal Likelihoods and Bayes Factors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-model-probabilities">Posterior Model Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">Posterior Distribution</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-detecting-pleiotropy">Example 2 – Detecting pleiotropy</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Setting Prior Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Prior Distribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-marginal-likelihood-and-bayes-factor">Computing Marginal Likelihood and Bayes Factor</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Posterior Model Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Posterior Distribution</a></li>
 </ul>
 </li>
 </ul>
@@ -757,8 +757,8 @@ document.write(`
 <li><p><strong>Prior for error variance</strong>: <span class="math notranslate nohighlight">\(\sigma^2 | M_k \sim \text{Inverse-Gamma}(a, b)\)</span> with <span class="math notranslate nohighlight">\(a = 2\)</span>, <span class="math notranslate nohighlight">\(b = 1\)</span></p></li>
 </ul>
 </section>
-<section id="setting-prior-probabilities">
-<h3>Setting Prior Probabilities<a class="headerlink" href="#setting-prior-probabilities" title="Link to this heading">#</a></h3>
+<section id="prior-distribution">
+<h3>Prior Distribution<a class="headerlink" href="#prior-distribution" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Bayesian model setup</span>
@@ -871,8 +871,8 @@ document.write(`
 </div></div>
 </div>
 </section>
-<section id="posterior-model-probabilities">
-<h3>Posterior Model Probabilities<a class="headerlink" href="#posterior-model-probabilities" title="Link to this heading">#</a></h3>
+<section id="posterior-distribution">
+<h3>Posterior Distribution<a class="headerlink" href="#posterior-distribution" title="Link to this heading">#</a></h3>
 <p>We now combine the prior probabilities with the Bayes factors to obtain posterior probabilities for each model. This tells us, given the data, how probable each model is.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1033,7 +1033,7 @@ Effect on weight (beta2): 4.416
 </div>
 </section>
 <section id="id2">
-<h3>Setting Prior Probabilities<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<h3>Prior Distribution<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <p>We’ll define all possible models as prior covariance matrices for the effect sizes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1240,7 +1240,7 @@ Effect on weight (beta2): 4.416
 </div>
 </section>
 <section id="id3">
-<h3>Posterior Model Probabilities<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<h3>Posterior Distribution<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># ============================================================================</span>
@@ -1441,16 +1441,16 @@ Posterior probability: 0.8194
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-fine-mapping">Example 1 – Fine Mapping</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setting-prior-probabilities">Setting Prior Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">Prior Distribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-marginal-likelihoods-and-bayes-factors">Computing Marginal Likelihoods and Bayes Factors</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-model-probabilities">Posterior Model Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">Posterior Distribution</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-detecting-pleiotropy">Example 2 – Detecting pleiotropy</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Setting Prior Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Prior Distribution</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-marginal-likelihood-and-bayes-factor">Computing Marginal Likelihood and Bayes Factor</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Posterior Model Probabilities</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Posterior Distribution</a></li>
 </ul>
 </li>
 </ul>

@@ -580,7 +580,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-and-log-likelihood">Likelihood and Log-likelihood</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-visualization">Results and Visualization</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#supplementary">Supplementary</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Graphical Summary</a></li>
 </ul>
@@ -663,6 +668,8 @@ document.write(`
 </ul>
 <p><strong>How do I know from the data which model is most plausible?</strong></p>
 <p>This is where likelihood comes in - it helps us evaluate how well each model explains our observed data. We’ll generate some example data where we know the true effect size (<span class="math notranslate nohighlight">\(\beta = 0.4\)</span>), then calculate the likelihood under each of our three theories to see which one the data supports most strongly.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>Let’s first generate the genotype data and trait values for 5 individuals.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -704,6 +711,9 @@ document.write(`
 </div>
 </div>
 </div>
+</section>
+<section id="likelihood-and-log-likelihood">
+<h2>Likelihood and Log-likelihood<a class="headerlink" href="#likelihood-and-log-likelihood" title="Link to this heading">#</a></h2>
 <p>Now, let’s create two functions to compute the likelihood and log-likelihood under different models (in this case, different <span class="math notranslate nohighlight">\(\beta\)</span> values) for the effect of a genetic variant on height:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -749,7 +759,9 @@ document.write(`
 </div>
 </div>
 </div>
-<p>The results are:</p>
+</section>
+<section id="results-and-visualization">
+<h2>Results and Visualization<a class="headerlink" href="#results-and-visualization" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">results</span>
@@ -826,6 +838,7 @@ document.write(`
 </a>
 </div>
 </div>
+</section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="supplementary">
 <h1>Supplementary<a class="headerlink" href="#supplementary" title="Link to this heading">#</a></h1>
@@ -1037,7 +1050,12 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-and-log-likelihood">Likelihood and Log-likelihood</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#results-and-visualization">Results and Visualization</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#supplementary">Supplementary</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Graphical Summary</a></li>
 </ul>

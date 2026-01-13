@@ -587,11 +587,10 @@ document.write(`
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-simulated-data">Generate Simulated Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-model-to-our-data">Applying the Model to Our Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Prior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-variances">Estimating the Variances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-posterior">Computing the Posterior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Posterior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-bayesian-update">Visualizing the Bayesian Update</a></li>
 </ul>
 </li>
@@ -737,8 +736,8 @@ Y_i | \beta, \sigma^2 &amp;\sim \mathcal{N}(X_i \beta, \sigma^2) \quad \text{[li
 \end{split}\]</div>
 <p>The posterior distribution <span class="math notranslate nohighlight">\(p(\beta | \mathbf{Y})\)</span> shows how plausible each effect size is after combining prior knowledge with observed data.</p>
 <p><strong>Why this matters</strong>: In genomics with thousands of variants, treating effects as random with shared distributional properties is more realistic than treating each as an independent fixed unknown.</p>
-<section id="generate-simulated-data">
-<h2>Generate Simulated Data<a class="headerlink" href="#generate-simulated-data" title="Link to this heading">#</a></h2>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>First, let’s recreate the exact same genetic data from our previous <a class="reference external" href="https://statfungen.github.io/statgen-primer/likelihood.html">Lecture: likelihood</a>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -782,9 +781,6 @@ Y_i | \beta, \sigma^2 &amp;\sim \mathcal{N}(X_i \beta, \sigma^2) \quad \text{[li
 </div>
 </div>
 </div>
-</section>
-<section id="applying-the-model-to-our-data">
-<h2>Applying the Model to Our Data<a class="headerlink" href="#applying-the-model-to-our-data" title="Link to this heading">#</a></h2>
 <p>To apply the Bayesian normal mean model, we need to specify the <strong>prior distribution</strong> for <span class="math notranslate nohighlight">\(\beta\)</span> and the <strong>residual variance</strong> <span class="math notranslate nohighlight">\(\sigma^2\)</span>. We assume the prior mean is zero (i.e., we have no reason to believe the effect is positive or negative before seeing data):</p>
 <div class="math notranslate nohighlight">
 \[
@@ -880,8 +876,8 @@ P(\mathbf{Y} | \sigma^2, \sigma_0^2) = \int P(\mathbf{Y} | \beta, \sigma^2) P(\b
 </div>
 </div>
 </section>
-<section id="computing-the-posterior">
-<h2>Computing the Posterior<a class="headerlink" href="#computing-the-posterior" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h2>Posterior Distribution<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>With the estimated variances, we can now compute the posterior distribution using the formulas from the Technical Details section above.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1077,11 +1073,10 @@ Posterior SD: 0.2821
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-simulated-data">Generate Simulated Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-model-to-our-data">Applying the Model to Our Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Prior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-variances">Estimating the Variances</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-posterior">Computing the Posterior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Posterior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-bayesian-update">Visualizing the Bayesian Update</a></li>
 </ul>
 </li>

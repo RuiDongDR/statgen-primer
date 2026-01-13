@@ -595,9 +595,9 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-exploratory-factor-analysis-in-gene-expression">Example 2 – Exploratory Factor Analysis in Gene Expression</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-factor-matrix-factorization">Perform Factor Matrix Factorization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-negative-matrix-factorization">Non-negative Matrix Factorization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nfm-results">NFM Results</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruct-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">Reconstruct based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">Reconstruction Based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization</a></li>
 </ul>
 </li>
 </ul>
@@ -843,9 +843,9 @@ p_{ij} = \sum_{k=1}^{K} l_{ki} \times f_{kj}
 	<tr><th></th><th scope=col>SNP1</th><th scope=col>SNP2</th><th scope=col>SNP3</th><th scope=col>SNP4</th><th scope=col>SNP5</th><th scope=col>SNP6</th><th scope=col>SNP7</th><th scope=col>SNP8</th><th scope=col>SNP9</th><th scope=col>SNP10</th><th scope=col>⋯</th><th scope=col>SNP91</th><th scope=col>SNP92</th><th scope=col>SNP93</th><th scope=col>SNP94</th><th scope=col>SNP95</th><th scope=col>SNP96</th><th scope=col>SNP97</th><th scope=col>SNP98</th><th scope=col>SNP99</th><th scope=col>SNP100</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>IND1</th><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+	<tr><th scope=row>IND1</th><td>1</td><td>2</td><td>1</td><td>2</td><td>1</td><td>1</td><td>2</td><td>1</td><td>2</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
 	<tr><th scope=row>IND2</th><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
-	<tr><th scope=row>IND3</th><td>2</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>1</td><td>1</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td><td>1</td><td>0</td><td>1</td><td>1</td></tr>
+	<tr><th scope=row>IND3</th><td>2</td><td>2</td><td>2</td><td>2</td><td>2</td><td>0</td><td>2</td><td>2</td><td>2</td><td>2</td><td>⋯</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -855,10 +855,18 @@ p_{ij} = \sum_{k=1}^{K} l_{ki} \times f_{kj}
 <h3>Solve for <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> using ADMIXTURE<a class="headerlink" href="#solve-for-mathbf-l-and-mathbf-f-using-admixture" title="Link to this heading">#</a></h3>
 <p>Now comes the interesting part! We observe the genotype matrix <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>, but in reality, we don’t know the true <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> matrices. We need to <strong>estimate</strong> them from the data using the ADMIXTURE algorithm.</p>
 <p>The ADMIXTURE algorithm is based on maximum likelihood estimation. It finds the <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> matrices that maximize the probability of observing the genotype data <span class="math notranslate nohighlight">\(\mathbf{X}\)</span>.</p>
+<p><strong>Model Assumptions:</strong>
+The likelihood calculation assumes:</p>
+<ul class="simple">
+<li><p><strong>Hardy-Weinberg Equilibrium (HWE)</strong> within each ancestral population (see <a class="reference external" href="https://statfungen.github.io/statgen-primer/Hardy_Weinberg_equilibrium.html">Lecture: Hardy-Weinberg Equilibrium</a>)</p></li>
+<li><p>Linkage equilibrium between SNPs (no LD considered)</p></li>
+<li><p>For individual <span class="math notranslate nohighlight">\(i\)</span> at SNP <span class="math notranslate nohighlight">\(j\)</span> with ancestry proportions <span class="math notranslate nohighlight">\(\mathbf{L}_i\)</span> and ancestral allele frequencies <span class="math notranslate nohighlight">\(\mathbf{F}_j\)</span>, the probability of observing genotype <span class="math notranslate nohighlight">\(X_{ij}\)</span> depends on the individual’s ancestry-weighted allele frequency: <span class="math notranslate nohighlight">\(p_{ij} = \sum_{k=1}^K L_{ik} F_{jk}\)</span></p></li>
+</ul>
+<p>Under HWE, the genotype probabilities are determined by this admixed allele frequency.</p>
 <p><strong>Constraints:</strong></p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(0 \leq \mathbf{F}_{ij} \leq 1\)</span> (allele frequencies must be valid probabilities)</p></li>
-<li><p><span class="math notranslate nohighlight">\(L_{ij} \geq 0\)</span> and <span class="math notranslate nohighlight">\(\sum_j L_{ij} = 1\)</span> (ancestry proportions must sum to 1)</p></li>
+<li><p><span class="math notranslate nohighlight">\(0 \leq \mathbf{F}_{jk} \leq 1\)</span> (allele frequencies must be valid probabilities)</p></li>
+<li><p><span class="math notranslate nohighlight">\(L_{ik} \geq 0\)</span> and <span class="math notranslate nohighlight">\(\sum_{k=1}^K L_{ik} = 1\)</span> (ancestry proportions must sum to 1)</p></li>
 </ul>
 <p><strong>Block Relaxation Strategy:</strong></p>
 <ol class="arabic simple">
@@ -995,11 +1003,11 @@ p_{ij} = \sum_{k=1}^{K} l_{ki} \times f_{kj}
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Running ADMIXTURE (EM algorithm) (only first five iterations)...
 Iteration | Log-likelihood | Change
 -----------------------------------------
-        1 |       -6796.52 | -
-        2 |       -6772.95 | +23.566719
-        3 |       -6728.39 | +44.556606
-        4 |       -6648.62 | +79.767643
-        5 |       -6511.89 | +136.730035
+        1 |       -6717.24 | -
+        2 |       -6640.32 | +76.911938
+        3 |       -6505.67 | +134.657908
+        4 |       -6286.42 | +219.247961
+        5 |       -5970.80 | +315.618363
 </pre></div>
 </div>
 </div>
@@ -1046,7 +1054,7 @@ Iteration | Log-likelihood | Change
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7d50bb27cb482891e106ab18ce0d97e9e4abfebbb120868d8059965ceace7931.png"><img alt="_images/7d50bb27cb482891e106ab18ce0d97e9e4abfebbb120868d8059965ceace7931.png" src="_images/7d50bb27cb482891e106ab18ce0d97e9e4abfebbb120868d8059965ceace7931.png" style="width: 420px; height: 420px;" />
+<a class="reference internal image-reference" href="_images/2779243d8f127f7a91b4319773121925711cdb4d05ff619a8711403161e7dcc6.png"><img alt="_images/2779243d8f127f7a91b4319773121925711cdb4d05ff619a8711403161e7dcc6.png" src="_images/2779243d8f127f7a91b4319773121925711cdb4d05ff619a8711403161e7dcc6.png" style="width: 420px; height: 420px;" />
 </a>
 </div>
 </div>
@@ -1058,28 +1066,6 @@ Iteration | Log-likelihood | Change
 <p>First, let’s create toy data with a known structure where we have two latent biological pathways affecting gene expression.</p>
 <section id="id1">
 <h3>Setup<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">install.packages</span><span class="p">(</span><span class="s">&quot;NMF&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Warning message:
-“dependency ‘Biobase’ is not available”
-also installing the dependencies ‘iterators’, ‘registry’, ‘rngtools’, ‘cluster’, ‘gridBase’, ‘foreach’, ‘doParallel’, ‘BiocManager’
-
-
-Warning message in install.packages(&quot;NMF&quot;):
-“installation of package ‘NMF’ had non-zero exit status”
-Updating HTML index of packages in &#39;.Library&#39;
-
-Making &#39;packages.html&#39; ...
- done
-</pre></div>
-</div>
-</div>
-</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="nf">rm</span><span class="p">(</span><span class="n">list</span><span class="o">=</span><span class="nf">ls</span><span class="p">())</span>
@@ -1117,17 +1103,30 @@ Making &#39;packages.html&#39; ...
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="n">library</span><span class="p">(</span><span class="n">NMF</span><span class="p">):</span> <span class="n">there</span> <span class="ow">is</span> <span class="n">no</span> <span class="n">package</span> <span class="n">called</span> <span class="err">‘</span><span class="n">NMF</span><span class="err">’</span>
-<span class="ne">Traceback</span>:
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Data dimensions: 100 samples x 5 genes
 
-<span class="mi">1</span><span class="o">.</span> <span class="n">stop</span><span class="p">(</span><span class="n">packageNotFoundError</span><span class="p">(</span><span class="n">package</span><span class="p">,</span> <span class="n">lib</span><span class="o">.</span><span class="n">loc</span><span class="p">,</span> <span class="n">sys</span><span class="o">.</span><span class="n">call</span><span class="p">()))</span>
+First few rows of expression data:
 </pre></div>
 </div>
-</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A matrix: 6 × 5 of type dbl</caption>
+<thead>
+	<tr><th></th><th scope=col>IL1</th><th scope=col>IL2</th><th scope=col>METAB1</th><th scope=col>METAB2</th><th scope=col>METAB3</th></tr>
+</thead>
+<tbody>
+	<tr><th scope=row>Sample1</th><td>0.28</td><td>0.51</td><td>1.16</td><td>0.78</td><td>0.61</td></tr>
+	<tr><th scope=row>Sample2</th><td>0.35</td><td>0.35</td><td>1.15</td><td>1.95</td><td>1.00</td></tr>
+	<tr><th scope=row>Sample3</th><td>1.64</td><td>0.95</td><td>0.31</td><td>0.42</td><td>0.60</td></tr>
+	<tr><th scope=row>Sample4</th><td>2.33</td><td>3.82</td><td>0.44</td><td>0.22</td><td>0.98</td></tr>
+	<tr><th scope=row>Sample5</th><td>0.44</td><td>0.41</td><td>1.55</td><td>2.28</td><td>1.44</td></tr>
+	<tr><th scope=row>Sample6</th><td>4.68</td><td>4.98</td><td>2.93</td><td>2.16</td><td>2.58</td></tr>
+</tbody>
+</table>
+</div></div>
 </div>
 </section>
-<section id="perform-factor-matrix-factorization">
-<h3>Perform Factor Matrix Factorization<a class="headerlink" href="#perform-factor-matrix-factorization" title="Link to this heading">#</a></h3>
+<section id="non-negative-matrix-factorization">
+<h3>Non-negative Matrix Factorization<a class="headerlink" href="#non-negative-matrix-factorization" title="Link to this heading">#</a></h3>
 <p>Then we perform the non-negative matrix factorization on the observed expression data.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1176,8 +1175,8 @@ Making &#39;packages.html&#39; ...
 <div class="output text_html">0.861558112926469</div><div class="output text_html">0.868112544437267</div></div>
 </div>
 </section>
-<section id="reconstruct-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">
-<h3>Reconstruct based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization<a class="headerlink" href="#reconstruct-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization" title="Link to this heading">#</a></h3>
+<section id="reconstruction-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">
+<h3>Reconstruction Based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization<a class="headerlink" href="#reconstruction-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization" title="Link to this heading">#</a></h3>
 <p>We can also reconstruct the expression matrix based on the estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and compute the variance explained by the model:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1357,9 +1356,9 @@ Making &#39;packages.html&#39; ...
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-exploratory-factor-analysis-in-gene-expression">Example 2 – Exploratory Factor Analysis in Gene Expression</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#perform-factor-matrix-factorization">Perform Factor Matrix Factorization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#non-negative-matrix-factorization">Non-negative Matrix Factorization</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#nfm-results">NFM Results</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruct-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">Reconstruct based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reconstruction-based-on-estimated-mathbf-l-and-mathbf-f-and-visualization">Reconstruction Based on Estimated <span class="math notranslate nohighlight">\(\mathbf{L}\)</span> and <span class="math notranslate nohighlight">\(\mathbf{F}\)</span> and Visualization</a></li>
 </ul>
 </li>
 </ul>

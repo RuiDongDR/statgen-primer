@@ -584,9 +584,9 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior">Prior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">Prior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-and-marginal-likelihood">Likelihood and Marginal Likelihood</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior">Posterior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">Posterior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-estimation-evaluation">Weight Estimation Evaluation</a></li>
 </ul>
 </li>
@@ -686,13 +686,13 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="example">
 <h1>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h1>
-<p>Recall our <a class="reference external" href="https://statfungen.github.io/statgen-primer/Bayesian_model_comparison.html">Lecture: Bayesian model comparison</a> where we compare different models for the genetic effects on height and weight of a single genetic variant.</p>
+<p>Recall our <a class="reference external" href="https://statfungen.github.io/statgen-primer/Bayesian_model_comparison.html">Lecture: Bayesian model comparison</a> where we compare different models for the genetic effects on Height and Weight of a single genetic variant.</p>
 <p><strong>What about analyzing hundreds or thousands of variants simultaneously?</strong></p>
 <p>In reality, genetic variants follow different biological mechanisms that we cannot condition on:</p>
 <ul class="simple">
 <li><p>Most variants have null effects on both traits</p></li>
-<li><p>Some affect only height (growth pathways)</p></li>
-<li><p>Others affect only weight (metabolism)</p></li>
+<li><p>Some affect only Height (growth pathways)</p></li>
+<li><p>Others affect only Weight (metabolism)</p></li>
 <li><p>A few affect both traits with varying correlations</p></li>
 </ul>
 <p>Since we cannot condition on which mechanism generated each variant, we observe only a heterogeneous scatter of effects with no clear pattern – a mixture of all models!</p>
@@ -730,10 +730,10 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define parameters and component models</span>
 <span class="n">M</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1000</span><span class="w">  </span><span class="c1"># Number of genetic variants</span>
-<span class="n">N</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1000</span><span class="w"> </span><span class="c1"># Number of individuals</span>
+<span class="n">N</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">10000</span><span class="w">  </span><span class="c1"># Number of individuals (increased for better power)</span>
 
 <span class="c1"># Effect size parameters - use larger effects for better detection</span>
-<span class="n">effect_variance</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">1.0</span><span class="w"> </span>
+<span class="n">effect_variance</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">2.0</span><span class="w">  </span><span class="c1"># Increased effect size for clearer signal</span>
 
 <span class="c1"># Define the 7 models as covariance matrices</span>
 <span class="n">models</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span>
@@ -775,7 +775,7 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 </div>
 </div>
 </div>
-<p>Among all the variants being generated, we assign 40% of them comes from <span class="math notranslate nohighlight">\(\text{M}_0\)</span>, 10% from <span class="math notranslate nohighlight">\(\text{M}_1\)</span>, etc.</p>
+<p>Among all the variants being generated, we assign 40% of them to come from <span class="math notranslate nohighlight">\(\text{M}_0\)</span>, 10% from <span class="math notranslate nohighlight">\(\text{M}_1\)</span>, etc.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate effect sizes from mixture distribution</span>
@@ -791,21 +791,21 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 <span class="w">                                </span><span class="n">prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mixture_weights</span><span class="p">)</span>
 
 <span class="c1"># Generate bivariate effect sizes based on component assignment</span>
-<span class="n">beta_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">numeric</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
-<span class="n">beta_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">numeric</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">beta_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">numeric</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
+<span class="n">beta_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">numeric</span><span class="p">(</span><span class="n">M</span><span class="p">)</span>
 
 <span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">model_name</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">component_assignments</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
 <span class="w">  </span><span class="n">cov_matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">models</span><span class="p">[[</span><span class="n">model_name</span><span class="p">]]</span>
 <span class="w">  </span>
 <span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">model_name</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;M0&quot;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">beta_height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span>
-<span class="w">    </span><span class="n">beta_weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span>
+<span class="w">    </span><span class="n">beta_Height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span>
+<span class="w">    </span><span class="n">beta_Weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0</span>
 <span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">cov_matrix_reg</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cov_matrix</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nf">diag</span><span class="p">(</span><span class="m">1e-8</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 <span class="w">    </span><span class="n">effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">mvrnorm</span><span class="p">(</span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">mu</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">),</span><span class="w"> </span><span class="n">Sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">cov_matrix_reg</span><span class="p">)</span>
-<span class="w">    </span><span class="n">beta_height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">effects</span><span class="p">[</span><span class="m">1</span><span class="p">]</span>
-<span class="w">    </span><span class="n">beta_weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">effects</span><span class="p">[</span><span class="m">2</span><span class="p">]</span>
+<span class="w">    </span><span class="n">beta_Height</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">effects</span><span class="p">[</span><span class="m">1</span><span class="p">]</span>
+<span class="w">    </span><span class="n">beta_Weight</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">effects</span><span class="p">[</span><span class="m">2</span><span class="p">]</span>
 <span class="w">  </span><span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
@@ -814,15 +814,13 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Summary statistics</span>
-<span class="n">null_variants</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">component_assignments</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;M0&quot;</span><span class="p">)</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="n">null_variants</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">component_assignments</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;M0&quot;</span><span class="p">)</span>
 <span class="n">nonpleiotropic_variants</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">component_assignments</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;M0&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M2&quot;</span><span class="p">))</span>
 <span class="n">pleiotropic_variants</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">component_assignments</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;M3&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M4&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M5&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M6&quot;</span><span class="p">))</span>
 <span class="n">component_counts</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">table</span><span class="p">(</span><span class="n">component_assignments</span><span class="p">)</span>
 
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\nGenerated effect sizes for&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;variants:\n&quot;</span><span class="p">)</span>
 <span class="n">component_counts</span>
-<span class="n">models_df</span>
 </pre></div>
 </div>
 </div>
@@ -835,24 +833,9 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 421  99  98   7 198 128  49 
 </pre></div>
 </div>
-<div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 7 × 2</caption>
-<thead>
-	<tr><th scope=col>Model</th><th scope=col>Mixture_Prop</th></tr>
-	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><td>M0</td><td>0.40</td></tr>
-	<tr><td>M1</td><td>0.10</td></tr>
-	<tr><td>M2</td><td>0.10</td></tr>
-	<tr><td>M3</td><td>0.01</td></tr>
-	<tr><td>M4</td><td>0.19</td></tr>
-	<tr><td>M5</td><td>0.15</td></tr>
-	<tr><td>M6</td><td>0.05</td></tr>
-</tbody>
-</table>
-</div></div>
 </div>
+</div>
+<p>The following figure shows a mixture of genetic effects on Height and Weight.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize the mixture of effect sizes</span>
@@ -860,8 +843,8 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 <span class="w">                     </span><span class="s">&quot;M3&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gold&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M4&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;purple&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M5&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;M6&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;brown&quot;</span><span class="p">)</span>
 
 <span class="n">plot_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
-<span class="w">  </span><span class="n">Height_Effect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta_height</span><span class="p">,</span>
-<span class="w">  </span><span class="n">Weight_Effect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta_weight</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Height_Effect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta_Height</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Weight_Effect</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta_Weight</span><span class="p">,</span>
 <span class="w">  </span><span class="n">Component</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">component_assignments</span>
 <span class="p">)</span>
 
@@ -873,7 +856,7 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 <span class="w">                     </span><span class="n">labels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="nf">names</span><span class="p">(</span><span class="n">component_counts</span><span class="p">),</span><span class="w"> </span><span class="s">&quot; (n=&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">component_counts</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
 <span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;True Mixture of Genetic Effects&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;Null:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">null_variants</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;| Pleiotropic:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropic_variants</span><span class="p">),</span>
+<span class="w">    </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="s">&quot;Non-pleiotropy:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">nonpleiotropic_variants</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;| Pleiotropic:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropic_variants</span><span class="p">),</span>
 <span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Effect on Height (β₁)&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Effect on Weight (β₂)&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
@@ -891,10 +874,11 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/7d73bafd5c53515ee86972b56a54cc22463ceb01f21e733574518b361d30161a.png"><img alt="_images/7d73bafd5c53515ee86972b56a54cc22463ceb01f21e733574518b361d30161a.png" src="_images/7d73bafd5c53515ee86972b56a54cc22463ceb01f21e733574518b361d30161a.png" style="width: 420px; height: 420px;" />
+<a class="reference internal image-reference" href="_images/742298530560db79e79f6a23ed20e0f59fd08be18aa84f38da23ef6c0eed8962.png"><img alt="_images/742298530560db79e79f6a23ed20e0f59fd08be18aa84f38da23ef6c0eed8962.png" src="_images/742298530560db79e79f6a23ed20e0f59fd08be18aa84f38da23ef6c0eed8962.png" style="width: 420px; height: 420px;" />
 </a>
 </div>
 </div>
+<p>And if we break the figure down to each model:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize each component separately to see their distinct patterns</span>
@@ -904,20 +888,20 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 <span class="w">  </span><span class="n">idx</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">which</span><span class="p">(</span><span class="n">component_assignments</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">comp</span><span class="p">)</span>
 <span class="w">  </span>
 <span class="w">  </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">h_effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">beta_height</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
-<span class="w">    </span><span class="n">w_effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">beta_weight</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="w">    </span><span class="n">h_effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">beta_Height</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+<span class="w">    </span><span class="n">w_effects</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">beta_Weight</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="nf">plot</span><span class="p">(</span><span class="n">h_effects</span><span class="p">,</span><span class="w"> </span><span class="n">w_effects</span><span class="p">,</span><span class="w"> </span>
 <span class="w">         </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(n=&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">idx</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">),</span>
 <span class="w">         </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Height Effect&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Weight Effect&quot;</span><span class="p">,</span>
 <span class="w">         </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">component_colors</span><span class="p">[</span><span class="n">comp</span><span class="p">],</span><span class="w"> </span><span class="n">pch</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">,</span><span class="w"> </span>
-<span class="w">         </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1.5</span><span class="p">,</span><span class="w"> </span><span class="m">1.5</span><span class="p">),</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1.5</span><span class="p">,</span><span class="w"> </span><span class="m">1.5</span><span class="p">))</span>
+<span class="w">         </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">))</span>
 <span class="w">    </span><span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gray&quot;</span><span class="p">)</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="c1"># Add correlation line for M3 (perfect correlation)</span>
 <span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">comp</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&quot;M3&quot;</span><span class="p">)</span><span class="w"> </span><span class="nf">abline</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">component_colors</span><span class="p">[</span><span class="n">comp</span><span class="p">],</span><span class="w"> </span><span class="n">lwd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">)</span>
 <span class="w">  </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="nf">plot</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1.5</span><span class="p">,</span><span class="w"> </span><span class="m">1.5</span><span class="p">),</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-1.5</span><span class="p">,</span><span class="w"> </span><span class="m">1.5</span><span class="p">),</span>
+<span class="w">    </span><span class="nf">plot</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;n&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">xlim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="n">ylim</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span>
 <span class="w">         </span><span class="n">main</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste</span><span class="p">(</span><span class="n">comp</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;(n=0)&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sep</span><span class="o">=</span><span class="s">&quot;&quot;</span><span class="p">),</span>
 <span class="w">         </span><span class="n">xlab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Height Effect&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">ylab</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Weight Effect&quot;</span><span class="p">)</span>
 <span class="w">    </span><span class="nf">abline</span><span class="p">(</span><span class="n">h</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">v</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">lty</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">col</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;gray&quot;</span><span class="p">)</span>
@@ -929,10 +913,11 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 </div>
 </div>
 <div class="cell_output docutils container">
-<a class="reference internal image-reference" href="_images/c87457aaee73336d1b66aef50d6996f17d8b9a7a0b72b86d223820f805007d78.png"><img alt="_images/c87457aaee73336d1b66aef50d6996f17d8b9a7a0b72b86d223820f805007d78.png" src="_images/c87457aaee73336d1b66aef50d6996f17d8b9a7a0b72b86d223820f805007d78.png" style="width: 420px; height: 420px;" />
+<a class="reference internal image-reference" href="_images/42da5bd5ea47d21bab4c21ddc2e5c77e9ae2f4beb27931e98e1ae513418d0881.png"><img alt="_images/42da5bd5ea47d21bab4c21ddc2e5c77e9ae2f4beb27931e98e1ae513418d0881.png" src="_images/42da5bd5ea47d21bab4c21ddc2e5c77e9ae2f4beb27931e98e1ae513418d0881.png" style="width: 420px; height: 420px;" />
 </a>
 </div>
 </div>
+<p>Based on the genetic effects of all variants, we simulate the phenotype data:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate genotype and phenotype data</span>
@@ -940,58 +925,39 @@ P(Z = c \mid \beta, \text{data}) \propto \pi_c p_c(\beta \mid \text{data})
 <span class="n">X</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">rbinom</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">,</span><span class="w"> </span><span class="n">prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">maf</span><span class="p">),</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">)</span>
 
 <span class="c1"># Calculate genetic values</span>
-<span class="n">genetic_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">beta_height</span><span class="p">)</span>
-<span class="n">genetic_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">beta_weight</span><span class="p">)</span>
+<span class="n">genetic_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">beta_Height</span><span class="p">)</span>
+<span class="n">genetic_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">as.vector</span><span class="p">(</span><span class="n">X</span><span class="w"> </span><span class="o">%*%</span><span class="w"> </span><span class="n">beta_Weight</span><span class="p">)</span>
 
-<span class="c1"># Use lower heritability to add more noise, making the problem more realistic</span>
-<span class="n">h2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.5</span><span class="w">  </span><span class="c1"># 50% heritability</span>
+<span class="n">h2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.7</span><span class="w">  </span><span class="c1"># 70% heritability (increased for better detection)</span>
 
-<span class="n">var_genetic_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">genetic_height</span><span class="p">)</span>
-<span class="n">var_genetic_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">genetic_weight</span><span class="p">)</span>
+<span class="n">var_genetic_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">genetic_Height</span><span class="p">)</span>
+<span class="n">var_genetic_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">genetic_Weight</span><span class="p">)</span>
 
-<span class="n">var_error_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">var_genetic_height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h2</span>
-<span class="n">var_error_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">var_genetic_weight</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h2</span>
+<span class="n">var_error_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">var_genetic_Height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h2</span>
+<span class="n">var_error_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">var_genetic_Weight</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">h2</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">h2</span>
 
-<span class="n">error_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var_error_height</span><span class="p">))</span>
-<span class="n">error_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var_error_weight</span><span class="p">))</span>
+<span class="n">error_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var_error_Height</span><span class="p">))</span>
+<span class="n">error_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rnorm</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">var_error_Weight</span><span class="p">))</span>
 
-<span class="n">phenotype_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">genetic_height</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">error_height</span>
-<span class="n">phenotype_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">genetic_weight</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">error_weight</span>
-
-<span class="n">h2_height_realized</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">genetic_height</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">phenotype_height</span><span class="p">)</span>
-<span class="n">h2_weight_realized</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">genetic_weight</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">var</span><span class="p">(</span><span class="n">phenotype_weight</span><span class="p">)</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\nGenerated phenotype data:\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Individuals:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">N</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;| Variants:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Heritability - Height:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">h2_height_realized</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Heritability - Weight:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">h2_weight_realized</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Phenotypic correlation:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">cor</span><span class="p">(</span><span class="n">phenotype_height</span><span class="p">,</span><span class="w"> </span><span class="n">phenotype_weight</span><span class="p">),</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Generated phenotype data:
-Individuals: 1000 | Variants: 1000 
-Heritability - Height: 0.516 
-Heritability - Weight: 0.513 
-Phenotypic correlation: 0.147 
+<span class="n">phenotype_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">genetic_Height</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">error_Height</span>
+<span class="n">phenotype_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">genetic_Weight</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">error_Weight</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="prior">
-<h2>Prior<a class="headerlink" href="#prior" title="Link to this heading">#</a></h2>
+<section id="prior-distribution">
+<h2>Prior Distribution<a class="headerlink" href="#prior-distribution" title="Link to this heading">#</a></h2>
 <p>We specify an <strong>equal prior</strong> across all 7 components (each with weight 1/7), expressing no prior preference for any specific model. This allows the data to fully drive the inference.</p>
-<p>For height effects:</p>
+<p>For Height effects:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\text{M}_0\)</span> and <span class="math notranslate nohighlight">\(\text{M}_2\)</span> have <span class="math notranslate nohighlight">\(\sigma = 0\)</span> (no height effect)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\text{M}_1\)</span>, <span class="math notranslate nohighlight">\(\text{M}_3\)</span>-<span class="math notranslate nohighlight">\(\text{M}_6\)</span> have <span class="math notranslate nohighlight">\(\sigma = 1.0\)</span> (potential height effects)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{M}_0\)</span> and <span class="math notranslate nohighlight">\(\text{M}_2\)</span> have <span class="math notranslate nohighlight">\(\sigma = 0\)</span> (no Height effect)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{M}_1\)</span>, <span class="math notranslate nohighlight">\(\text{M}_3\)</span>-<span class="math notranslate nohighlight">\(\text{M}_6\)</span> have <span class="math notranslate nohighlight">\(\sigma = \sqrt{2}\)</span> (potential Height effects)</p></li>
 </ul>
-<p>For weight effects:</p>
+<p>For Weight effects:</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(\text{M}_0\)</span> and <span class="math notranslate nohighlight">\(\text{M}_1\)</span> have <span class="math notranslate nohighlight">\(\sigma = 0\)</span> (no weight effect)</p></li>
-<li><p><span class="math notranslate nohighlight">\(\text{M}_2\)</span>, <span class="math notranslate nohighlight">\(\text{M}_3\)</span>-<span class="math notranslate nohighlight">\(\text{M}_6\)</span> have <span class="math notranslate nohighlight">\(\sigma = 1.0\)</span> (potential weight effects)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{M}_0\)</span> and <span class="math notranslate nohighlight">\(\text{M}_1\)</span> have <span class="math notranslate nohighlight">\(\sigma = 0\)</span> (no Weight effect)</p></li>
+<li><p><span class="math notranslate nohighlight">\(\text{M}_2\)</span>, <span class="math notranslate nohighlight">\(\text{M}_3\)</span>-<span class="math notranslate nohighlight">\(\text{M}_6\)</span> have <span class="math notranslate nohighlight">\(\sigma = \sqrt{2}\)</span> (potential Weight effects)</p></li>
 </ul>
 <p>Note: The <strong>true</strong> data-generating mixture has most variants from <span class="math notranslate nohighlight">\(\text{M}_0\)</span> (null), creating a realistic scenario where we must detect rare pleiotropic variants.</p>
 <div class="cell docutils container">
@@ -1000,23 +966,23 @@ Phenotypic correlation: 0.147
 <span class="n">prior_weights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="m">1</span><span class="o">/</span><span class="m">7</span><span class="p">,</span><span class="w"> </span><span class="m">7</span><span class="p">)</span>
 <span class="nf">names</span><span class="p">(</span><span class="n">prior_weights</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">models</span><span class="p">)</span>
 
-<span class="c1"># Add prior weights to models_df</span>
-<span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prior_weights</span>
+<span class="c1"># Add prior proportions to models_df</span>
+<span class="n">models_df</span><span class="o">$</span><span class="n">prior_weights</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prior_weights</span>
 
-<span class="c1"># Prior standard deviations for BOTH height and weight effects</span>
-<span class="n">prior_sigma_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
-<span class="w">  </span><span class="n">M0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Null: no height effect</span>
+<span class="c1"># Prior standard deviations for BOTH Height and Weight effects</span>
+<span class="n">prior_sigma_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">  </span><span class="n">M0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Null: no Height effect</span>
 <span class="w">  </span><span class="n">M1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Height-specific</span>
-<span class="w">  </span><span class="n">M2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Weight-specific: no height effect</span>
+<span class="w">  </span><span class="n">M2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Weight-specific: no Height effect</span>
 <span class="w">  </span><span class="n">M3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Pleiotropic</span>
 <span class="w">  </span><span class="n">M4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Pleiotropic</span>
 <span class="w">  </span><span class="n">M5</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Pleiotropic</span>
 <span class="w">  </span><span class="n">M6</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">)</span><span class="w">    </span><span class="c1"># Pleiotropic</span>
 <span class="p">)</span>
 
-<span class="n">prior_sigma_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
-<span class="w">  </span><span class="n">M0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Null: no weight effect</span>
-<span class="w">  </span><span class="n">M1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Height-specific: no weight effect</span>
+<span class="n">prior_sigma_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span>
+<span class="w">  </span><span class="n">M0</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Null: no Weight effect</span>
+<span class="w">  </span><span class="n">M1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w">                       </span><span class="c1"># Height-specific: no Weight effect</span>
 <span class="w">  </span><span class="n">M2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Weight-specific</span>
 <span class="w">  </span><span class="n">M3</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Pleiotropic</span>
 <span class="w">  </span><span class="n">M4</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">effect_variance</span><span class="p">),</span><span class="w">   </span><span class="c1"># Pleiotropic</span>
@@ -1025,8 +991,8 @@ Phenotypic correlation: 0.147
 <span class="p">)</span>
 
 <span class="c1"># Add to models_df</span>
-<span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prior_sigma_height</span>
-<span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prior_sigma_weight</span>
+<span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prior_sigma_Height</span>
+<span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">prior_sigma_Weight</span>
 
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\nMixture Prior for Height and Weight Effects (Equal Priors):\n&quot;</span><span class="p">)</span>
 <span class="n">models_df</span>
@@ -1040,17 +1006,17 @@ Phenotypic correlation: 0.147
 <div class="output text_html"><table class="dataframe">
 <caption>A data.frame: 7 × 5</caption>
 <thead>
-	<tr><th scope=col>Model</th><th scope=col>Mixture_Prop</th><th scope=col>Prior_Weight</th><th scope=col>Prior_Sigma_Height</th><th scope=col>Prior_Sigma_Weight</th></tr>
+	<tr><th scope=col>Model</th><th scope=col>Mixture_Prop</th><th scope=col>prior_weights</th><th scope=col>Prior_Sigma_Height</th><th scope=col>Prior_Sigma_Weight</th></tr>
 	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
 </thead>
 <tbody>
-	<tr><td>M0</td><td>0.40</td><td>0.1428571</td><td>0</td><td>0</td></tr>
-	<tr><td>M1</td><td>0.10</td><td>0.1428571</td><td>1</td><td>0</td></tr>
-	<tr><td>M2</td><td>0.10</td><td>0.1428571</td><td>0</td><td>1</td></tr>
-	<tr><td>M3</td><td>0.01</td><td>0.1428571</td><td>1</td><td>1</td></tr>
-	<tr><td>M4</td><td>0.19</td><td>0.1428571</td><td>1</td><td>1</td></tr>
-	<tr><td>M5</td><td>0.15</td><td>0.1428571</td><td>1</td><td>1</td></tr>
-	<tr><td>M6</td><td>0.05</td><td>0.1428571</td><td>1</td><td>1</td></tr>
+	<tr><td>M0</td><td>0.40</td><td>0.1428571</td><td>0.000000</td><td>0.000000</td></tr>
+	<tr><td>M1</td><td>0.10</td><td>0.1428571</td><td>1.414214</td><td>0.000000</td></tr>
+	<tr><td>M2</td><td>0.10</td><td>0.1428571</td><td>0.000000</td><td>1.414214</td></tr>
+	<tr><td>M3</td><td>0.01</td><td>0.1428571</td><td>1.414214</td><td>1.414214</td></tr>
+	<tr><td>M4</td><td>0.19</td><td>0.1428571</td><td>1.414214</td><td>1.414214</td></tr>
+	<tr><td>M5</td><td>0.15</td><td>0.1428571</td><td>1.414214</td><td>1.414214</td></tr>
+	<tr><td>M6</td><td>0.05</td><td>0.1428571</td><td>1.414214</td><td>1.414214</td></tr>
 </tbody>
 </table>
 </div></div>
@@ -1061,10 +1027,11 @@ Phenotypic correlation: 0.147
 <p>For each variant, we compute the marginal likelihood <span class="math notranslate nohighlight">\(P(\text{Data} | \text{Component})\)</span> under each component by integrating over the effect size parameter. This uses conjugate normal-normal priors for analytical tractability.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute marginal likelihood and posterior probabilities</span>
-<span class="n">Y</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">phenotype_height</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Compute marginal likelihood and posterior probabilities using BOTH phenotypes</span>
+<span class="n">Y_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">phenotype_Height</span>
+<span class="n">Y_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">phenotype_Weight</span>
 
-<span class="n">compute_posterior_mixture</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">pi_mix</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_mix</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="n">compute_posterior_mixture</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">,</span><span class="w"> </span><span class="n">pi_mix</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_Height</span><span class="p">,</span><span class="w"> </span><span class="n">sigma_Weight</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">  </span><span class="n">M</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ncol</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="w">  </span><span class="n">N</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 <span class="w">  </span><span class="n">n_comp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">pi_mix</span><span class="p">)</span>
@@ -1072,9 +1039,11 @@ Phenotypic correlation: 0.147
 <span class="w">  </span><span class="n">posterior_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">nrow</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span><span class="n">ncol</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">n_comp</span><span class="p">)</span>
 <span class="w">  </span><span class="nf">colnames</span><span class="p">(</span><span class="n">posterior_probs</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">names</span><span class="p">(</span><span class="n">pi_mix</span><span class="p">)</span>
 <span class="w">  </span>
-<span class="w">  </span><span class="c1"># Estimate residual variance from phenotype</span>
-<span class="w">  </span><span class="c1"># Use empirical estimate</span>
-<span class="w">  </span><span class="n">sigma_e</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sd</span><span class="p">(</span><span class="n">Y</span><span class="p">)</span>
+<span class="w">  </span><span class="c1"># Estimate residual covariance from phenotypes</span>
+<span class="w">  </span><span class="n">Sigma_residual</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cov</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">))</span>
+<span class="w">  </span><span class="n">sigma_e_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">Sigma_residual</span><span class="p">[</span><span class="m">1</span><span class="p">,</span><span class="m">1</span><span class="p">])</span>
+<span class="w">  </span><span class="n">sigma_e_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">Sigma_residual</span><span class="p">[</span><span class="m">2</span><span class="p">,</span><span class="m">2</span><span class="p">])</span>
+<span class="w">  </span><span class="n">rho_residual</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">Sigma_residual</span><span class="p">[</span><span class="m">1</span><span class="p">,</span><span class="m">2</span><span class="p">]</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_e_Height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">sigma_e_Weight</span><span class="p">)</span>
 <span class="w">  </span>
 <span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">M</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="n">Xi</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">X</span><span class="p">[,</span><span class="w"> </span><span class="n">i</span><span class="p">]</span>
@@ -1084,27 +1053,66 @@ Phenotypic correlation: 0.147
 <span class="w">    </span><span class="n">log_ml</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">numeric</span><span class="p">(</span><span class="n">n_comp</span><span class="p">)</span>
 <span class="w">    </span>
 <span class="w">    </span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">c</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">n_comp</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">sigma_beta</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_mix</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+<span class="w">      </span><span class="n">sigma_beta_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_Height</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
+<span class="w">      </span><span class="n">sigma_beta_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_Weight</span><span class="p">[</span><span class="n">c</span><span class="p">]</span>
 <span class="w">      </span>
-<span class="w">      </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_beta</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="c1"># Null component</span>
-<span class="w">        </span><span class="n">log_ml</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">dnorm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sigma_e</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="w">      </span><span class="c1"># Build prior covariance for this component</span>
+<span class="w">      </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_beta_Height</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">sigma_beta_Weight</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1"># M0: Null component - no effect on either trait</span>
+<span class="w">        </span><span class="c1"># Use null likelihood</span>
+<span class="w">        </span><span class="n">log_ml</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">dmvnorm</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                                 </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Weight</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">                                 </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sigma_residual</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_beta_Height</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1"># M2: Weight-only effect</span>
+<span class="w">        </span><span class="c1"># Compute univariate Bayes factor for Weight, null for Height</span>
+<span class="w">        </span><span class="n">cor_XY_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cor</span><span class="p">(</span><span class="n">Xi_std</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">)</span>
+<span class="w">        </span><span class="n">z_score_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor_XY_Weight</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">W_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_beta_Weight</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_e_Weight</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
+<span class="w">        </span><span class="n">log_bf_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W_Weight</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Weight</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z_score_Weight</span><span class="o">^</span><span class="m">2</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">dmvnorm</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                                   </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Weight</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">                                   </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sigma_residual</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="w">        </span><span class="n">log_ml</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">log_bf_Weight</span>
+<span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_beta_Weight</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="c1"># M1: Height-only effect</span>
+<span class="w">        </span><span class="c1"># Compute univariate Bayes factor for Height, null for Weight</span>
+<span class="w">        </span><span class="n">cor_XY_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cor</span><span class="p">(</span><span class="n">Xi_std</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Height</span><span class="p">)</span>
+<span class="w">        </span><span class="n">z_score_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor_XY_Height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">W_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_beta_Height</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_e_Height</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
+<span class="w">        </span><span class="n">log_bf_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Height</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W_Height</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Height</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z_score_Height</span><span class="o">^</span><span class="m">2</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">dmvnorm</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                                   </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Weight</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">                                   </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sigma_residual</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="w">        </span><span class="n">log_ml</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">log_bf_Height</span>
 <span class="w">      </span><span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="c1"># Non-null: use Bayes factor approximation</span>
-<span class="w">        </span><span class="c1"># Simple linear regression to get effect estimate</span>
-<span class="w">        </span><span class="n">cor_XY</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cor</span><span class="p">(</span><span class="n">Xi_std</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">)</span>
+<span class="w">        </span><span class="c1"># M3-M6: Pleiotropic effects on both traits</span>
+<span class="w">        </span><span class="c1"># Use bivariate Bayes factor approximation</span>
 <span class="w">        </span>
-<span class="w">        </span><span class="c1"># Approximate Bayes factor using correlation</span>
-<span class="w">        </span><span class="c1"># Larger effect_variance in prior gives higher BF for strong associations</span>
-<span class="w">        </span><span class="n">z_score</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor_XY</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="w">        </span><span class="c1"># Correlations with both traits</span>
+<span class="w">        </span><span class="n">cor_XY_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cor</span><span class="p">(</span><span class="n">Xi_std</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Height</span><span class="p">)</span>
+<span class="w">        </span><span class="n">cor_XY_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">cor</span><span class="p">(</span><span class="n">Xi_std</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">)</span>
 <span class="w">        </span>
-<span class="w">        </span><span class="c1"># Log Bayes factor using Wakefield&#39;s approximation</span>
-<span class="w">        </span><span class="n">W</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_beta</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_e</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
-<span class="w">        </span><span class="n">log_bf</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z_score</span><span class="o">^</span><span class="m">2</span>
+<span class="w">        </span><span class="n">z_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor_XY_Height</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
+<span class="w">        </span><span class="n">z_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">cor_XY_Weight</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">sqrt</span><span class="p">(</span><span class="n">N</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="m">1</span><span class="p">)</span>
 <span class="w">        </span>
-<span class="w">        </span><span class="c1"># Log marginal likelihood = log null likelihood + log BF</span>
-<span class="w">        </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">dnorm</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">Y</span><span class="p">),</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sigma_e</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
-<span class="w">        </span><span class="n">log_ml</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">log_bf</span>
+<span class="w">        </span><span class="c1"># Prior precision and data precision for each trait</span>
+<span class="w">        </span><span class="c1"># Simplified approximation: treat traits independently for BF computation</span>
+<span class="w">        </span><span class="n">W_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_beta_Height</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_e_Height</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
+<span class="w">        </span><span class="n">W_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigma_beta_Weight</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">sigma_e_Weight</span><span class="o">^</span><span class="m">2</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">N</span><span class="p">)</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">log_bf_Height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Height</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W_Height</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Height</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z_Height</span><span class="o">^</span><span class="m">2</span>
+<span class="w">        </span><span class="n">log_bf_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">log</span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Weight</span><span class="p">))</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="m">0.5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">W_Weight</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="m">1</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">W_Weight</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">z_Weight</span><span class="o">^</span><span class="m">2</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="c1"># Combined log BF for both traits (approximation)</span>
+<span class="w">        </span><span class="n">log_bf_bivariate</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">log_bf_Height</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">log_bf_Weight</span>
+<span class="w">        </span>
+<span class="w">        </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="nf">dmvnorm</span><span class="p">(</span><span class="nf">cbind</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">),</span><span class="w"> </span>
+<span class="w">                                   </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Height</span><span class="p">),</span><span class="w"> </span><span class="nf">mean</span><span class="p">(</span><span class="n">Y_Weight</span><span class="p">)),</span><span class="w"> </span>
+<span class="w">                                   </span><span class="n">sigma</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Sigma_residual</span><span class="p">,</span><span class="w"> </span><span class="n">log</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">TRUE</span><span class="p">))</span>
+<span class="w">        </span><span class="n">log_ml</span><span class="p">[</span><span class="n">c</span><span class="p">]</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">log_ml_null</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">log_bf_bivariate</span>
 <span class="w">      </span><span class="p">}</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="w">    </span>
@@ -1121,7 +1129,8 @@ Phenotypic correlation: 0.147
 <span class="w">  </span><span class="kr">return</span><span class="p">(</span><span class="n">posterior_probs</span><span class="p">)</span>
 <span class="p">}</span>
 
-<span class="n">posterior_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">compute_posterior_mixture</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y</span><span class="p">,</span><span class="w"> </span><span class="n">prior_weights</span><span class="p">,</span><span class="w"> </span><span class="n">prior_sigma_height</span><span class="p">)</span>
+<span class="n">posterior_probs</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">compute_posterior_mixture</span><span class="p">(</span><span class="n">X</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Height</span><span class="p">,</span><span class="w"> </span><span class="n">Y_Weight</span><span class="p">,</span><span class="w"> </span><span class="n">prior_weights</span><span class="p">,</span><span class="w"> </span>
+<span class="w">                                              </span><span class="n">prior_sigma_Height</span><span class="p">,</span><span class="w"> </span><span class="n">prior_sigma_Weight</span><span class="p">)</span>
 
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\nPosterior component probabilities (first 5 variants):\n&quot;</span><span class="p">)</span>
 <span class="nf">round</span><span class="p">(</span><span class="n">posterior_probs</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="p">],</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
@@ -1138,18 +1147,18 @@ Phenotypic correlation: 0.147
 	<tr><th scope=col>M0</th><th scope=col>M1</th><th scope=col>M2</th><th scope=col>M3</th><th scope=col>M4</th><th scope=col>M5</th><th scope=col>M6</th></tr>
 </thead>
 <tbody>
-	<tr><td>0.206</td><td>0.118</td><td>0.206</td><td>0.118</td><td>0.118</td><td>0.118</td><td>0.118</td></tr>
-	<tr><td>0.183</td><td>0.127</td><td>0.183</td><td>0.127</td><td>0.127</td><td>0.127</td><td>0.127</td></tr>
-	<tr><td>0.210</td><td>0.116</td><td>0.210</td><td>0.116</td><td>0.116</td><td>0.116</td><td>0.116</td></tr>
-	<tr><td>0.188</td><td>0.125</td><td>0.188</td><td>0.125</td><td>0.125</td><td>0.125</td><td>0.125</td></tr>
-	<tr><td>0.192</td><td>0.123</td><td>0.192</td><td>0.123</td><td>0.123</td><td>0.123</td><td>0.123</td></tr>
+	<tr><td>0.001</td><td>0.573</td><td>0.000</td><td>0.106</td><td>0.106</td><td>0.106</td><td>0.106</td></tr>
+	<tr><td>0.452</td><td>0.277</td><td>0.079</td><td>0.048</td><td>0.048</td><td>0.048</td><td>0.048</td></tr>
+	<tr><td>0.619</td><td>0.110</td><td>0.158</td><td>0.028</td><td>0.028</td><td>0.028</td><td>0.028</td></tr>
+	<tr><td>0.004</td><td>0.001</td><td>0.496</td><td>0.125</td><td>0.125</td><td>0.125</td><td>0.125</td></tr>
+	<tr><td>0.000</td><td>0.000</td><td>0.534</td><td>0.117</td><td>0.117</td><td>0.117</td><td>0.117</td></tr>
 </tbody>
 </table>
 </div></div>
 </div>
 </section>
-<section id="posterior">
-<h2>Posterior<a class="headerlink" href="#posterior" title="Link to this heading">#</a></h2>
+<section id="posterior-distribution">
+<h2>Posterior Distribution<a class="headerlink" href="#posterior-distribution" title="Link to this heading">#</a></h2>
 <p>Using Bayes’ rule, we update from prior to posterior component probabilities for each variant:</p>
 <div class="math notranslate nohighlight">
 \[
@@ -1164,77 +1173,9 @@ P(\text{Component} | \text{Data}) \propto P(\text{Data} | \text{Component}) \tim
 <span class="c1"># Compute empirical posterior weights</span>
 <span class="n">posterior_weights_empirical</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">colMeans</span><span class="p">(</span><span class="n">posterior_probs</span><span class="p">)</span>
 <span class="n">models_df</span><span class="o">$</span><span class="n">Posterior_Weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">posterior_weights_empirical</span>
-
-<span class="c1"># Create classification dataframe</span>
-<span class="n">classification_df</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
-<span class="w">  </span><span class="n">Variant</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1</span><span class="o">:</span><span class="n">M</span><span class="p">,</span>
-<span class="w">  </span><span class="n">True_Component</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">component_assignments</span><span class="p">,</span>
-<span class="w">  </span><span class="n">Posterior_Component</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">posterior_classification</span><span class="p">,</span>
-<span class="w">  </span><span class="n">Max_Posterior_Prob</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="nf">apply</span><span class="p">(</span><span class="n">posterior_probs</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">,</span><span class="w"> </span><span class="n">max</span><span class="p">),</span><span class="w"> </span><span class="m">3</span><span class="p">)</span>
-<span class="p">)</span>
-
-<span class="c1"># Classification accuracy at component level (exact match)</span>
-<span class="n">correct_classification</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">classification_df</span><span class="o">$</span><span class="n">True_Component</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">classification_df</span><span class="o">$</span><span class="n">Posterior_Component</span><span class="p">)</span>
-<span class="n">accuracy</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">correct_classification</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">M</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\n=== Component-Level Classification ===\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Correctly classified (exact component match):&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">correct_classification</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">M</span><span class="p">,</span><span class="w"> </span>
-<span class="w">    </span><span class="s">&quot;(&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="m">100</span><span class="o">*</span><span class="n">accuracy</span><span class="p">,</span><span class="w"> </span><span class="m">1</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;%)\n\n&quot;</span><span class="p">)</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Example classifications (first 10 variants):\n&quot;</span><span class="p">)</span>
-<span class="n">classification_df</span><span class="p">[</span><span class="m">1</span><span class="o">:</span><span class="m">10</span><span class="p">,</span><span class="w"> </span><span class="p">]</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\n\nModels dataframe with posterior weights:\n&quot;</span><span class="p">)</span>
-<span class="n">models_df</span>
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Component-Level Classification ===
-Correctly classified (exact component match): 387 / 1000 ( 38.7 %)
-
-Example classifications (first 10 variants):
-</pre></div>
-</div>
-<div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 10 × 4</caption>
-<thead>
-	<tr><th></th><th scope=col>Variant</th><th scope=col>True_Component</th><th scope=col>Posterior_Component</th><th scope=col>Max_Posterior_Prob</th></tr>
-	<tr><th></th><th scope=col>&lt;int&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><th scope=row>1</th><td> 1</td><td>M1</td><td>M0</td><td>0.206</td></tr>
-	<tr><th scope=row>2</th><td> 2</td><td>M1</td><td>M0</td><td>0.183</td></tr>
-	<tr><th scope=row>3</th><td> 3</td><td>M0</td><td>M0</td><td>0.210</td></tr>
-	<tr><th scope=row>4</th><td> 4</td><td>M2</td><td>M0</td><td>0.188</td></tr>
-	<tr><th scope=row>5</th><td> 5</td><td>M5</td><td>M0</td><td>0.192</td></tr>
-	<tr><th scope=row>6</th><td> 6</td><td>M4</td><td>M1</td><td>0.178</td></tr>
-	<tr><th scope=row>7</th><td> 7</td><td>M5</td><td>M1</td><td>0.165</td></tr>
-	<tr><th scope=row>8</th><td> 8</td><td>M0</td><td>M0</td><td>0.199</td></tr>
-	<tr><th scope=row>9</th><td> 9</td><td>M5</td><td>M1</td><td>0.192</td></tr>
-	<tr><th scope=row>10</th><td>10</td><td>M5</td><td>M0</td><td>0.190</td></tr>
-</tbody>
-</table>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Models dataframe with posterior weights:
-</pre></div>
-</div>
-<div class="output text_html"><table class="dataframe">
-<caption>A data.frame: 7 × 6</caption>
-<thead>
-	<tr><th scope=col>Model</th><th scope=col>Mixture_Prop</th><th scope=col>Prior_Weight</th><th scope=col>Prior_Sigma_Height</th><th scope=col>Prior_Sigma_Weight</th><th scope=col>Posterior_Weight</th></tr>
-	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
-</thead>
-<tbody>
-	<tr><td>M0</td><td>0.40</td><td>0.1428571</td><td>0</td><td>0</td><td>0.1645899</td></tr>
-	<tr><td>M1</td><td>0.10</td><td>0.1428571</td><td>1</td><td>0</td><td>0.1341640</td></tr>
-	<tr><td>M2</td><td>0.10</td><td>0.1428571</td><td>0</td><td>1</td><td>0.1645899</td></tr>
-	<tr><td>M3</td><td>0.01</td><td>0.1428571</td><td>1</td><td>1</td><td>0.1341640</td></tr>
-	<tr><td>M4</td><td>0.19</td><td>0.1428571</td><td>1</td><td>1</td><td>0.1341640</td></tr>
-	<tr><td>M5</td><td>0.15</td><td>0.1428571</td><td>1</td><td>1</td><td>0.1341640</td></tr>
-	<tr><td>M6</td><td>0.05</td><td>0.1428571</td><td>1</td><td>1</td><td>0.1341640</td></tr>
-</tbody>
-</table>
-</div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1265,17 +1206,7 @@ Example classifications (first 10 variants):
 <span class="n">true_negative</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_no_pleiotropy_true</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">is_pleiotropy_posterior</span><span class="p">)</span>
 <span class="n">false_negative</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_pleiotropy_true</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">is_pleiotropy_posterior</span><span class="p">)</span>
 
-<span class="c1"># Performance metrics</span>
-<span class="n">sensitivity</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">true_positive</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_pleiotropy_true</span><span class="p">)</span>
-<span class="n">specificity</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">true_negative</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_no_pleiotropy_true</span><span class="p">)</span>
-<span class="n">precision</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">true_positive</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">false_positive</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">true_positive</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="p">(</span><span class="n">true_positive</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">false_positive</span><span class="p">)</span>
-<span class="p">}</span><span class="w"> </span><span class="kr">else</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="m">0</span><span class="w"> </span><span class="p">}</span>
-<span class="n">accuracy_mixture</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="p">(</span><span class="n">true_positive</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">true_negative</span><span class="p">)</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">M</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\n=== Pleiotropy Detection Performance (Group-Level) ===\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Evaluation: Any pleiotropy component (M3/M4/M5/M6) classified as pleiotropy = correct\n\n&quot;</span><span class="p">)</span>
-
+<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\n=== Pleiotropy Detection Performance ===\n\n&quot;</span><span class="p">)</span>
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Confusion Matrix:\n&quot;</span><span class="p">)</span>
 <span class="n">confusion_matrix</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">matrix</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="n">true_negative</span><span class="p">,</span><span class="w"> </span><span class="n">false_positive</span><span class="p">,</span><span class="w"> </span>
 <span class="w">                             </span><span class="n">false_negative</span><span class="p">,</span><span class="w"> </span><span class="n">true_positive</span><span class="p">),</span>
@@ -1283,32 +1214,11 @@ Example classifications (first 10 variants):
 <span class="w">                          </span><span class="n">dimnames</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True: No Pleiotropy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;True: Pleiotropy&quot;</span><span class="p">),</span>
 <span class="w">                                         </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;Pred: No Pleiotropy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pred: Pleiotropy&quot;</span><span class="p">)))</span>
 <span class="n">confusion_matrix</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\nPerformance Metrics:\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Accuracy:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">accuracy_mixture</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Sensitivity (TPR):&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">sensitivity</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span>
-<span class="w">    </span><span class="s">&quot; - &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">true_positive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_pleiotropy_true</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;pleiotropic variants detected\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Specificity (TNR):&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">specificity</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span>
-<span class="w">    </span><span class="s">&quot; - &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">true_negative</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_no_pleiotropy_true</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;non-pleiotropic variants correctly classified\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;Precision (PPV):&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">),</span><span class="w"> </span>
-<span class="w">    </span><span class="s">&quot; - &quot;</span><span class="p">,</span><span class="w"> </span><span class="n">true_positive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;/&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">true_positive</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">false_positive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;predicted pleiotropic are true\n&quot;</span><span class="p">)</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\n=== Detailed Breakdown ===\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;No Pleiotropy Components (M0, M1, M2):\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;  True count:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_no_pleiotropy_true</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;  Correctly classified as no pleiotropy:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">true_negative</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;  Misclassified as pleiotropy:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">false_positive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\nPleiotropy Components (M3, M4, M5, M6):\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;  True count:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">is_pleiotropy_true</span><span class="p">),</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;  Correctly classified as pleiotropy:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">true_positive</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
-<span class="nf">cat</span><span class="p">(</span><span class="s">&quot;  Misclassified as no pleiotropy:&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">false_negative</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;\n&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Pleiotropy Detection Performance (Group-Level) ===
-Evaluation: Any pleiotropy component (M3/M4/M5/M6) classified as pleiotropy = correct
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Pleiotropy Detection Performance ===
 
 Confusion Matrix:
 </pre></div>
@@ -1319,29 +1229,11 @@ Confusion Matrix:
 	<tr><th></th><th scope=col>Pred: No Pleiotropy</th><th scope=col>Pred: Pleiotropy</th></tr>
 </thead>
 <tbody>
-	<tr><th scope=row>True: No Pleiotropy</th><td>334</td><td>284</td></tr>
-	<tr><th scope=row>True: Pleiotropy</th><td>151</td><td>231</td></tr>
+	<tr><th scope=row>True: No Pleiotropy</th><td>573</td><td> 45</td></tr>
+	<tr><th scope=row>True: Pleiotropy</th><td>162</td><td>220</td></tr>
 </tbody>
 </table>
-</div><div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Performance Metrics:
-Accuracy: 0.565 
-Sensitivity (TPR): 0.605  -  231 / 382 pleiotropic variants detected
-Specificity (TNR): 0.54  -  334 / 618 non-pleiotropic variants correctly classified
-Precision (PPV): 0.449  -  231 / 515 predicted pleiotropic are true
-
-=== Detailed Breakdown ===
-No Pleiotropy Components (M0, M1, M2):
-  True count: 618 
-  Correctly classified as no pleiotropy: 334 
-  Misclassified as pleiotropy: 284 
-
-Pleiotropy Components (M3, M4, M5, M6):
-  True count: 382 
-  Correctly classified as pleiotropy: 231 
-  Misclassified as no pleiotropy: 151 
-</pre></div>
-</div>
-</div>
+</div></div>
 </div>
 </section>
 <section id="weight-estimation-evaluation">
@@ -1359,7 +1251,7 @@ Pleiotropy Components (M3, M4, M5, M6):
 <span class="c1"># Create summary for mixture models</span>
 <span class="n">mixture_model_comparison</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
 <span class="w">  </span><span class="n">Mixture_Model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;No Pleiotropy (M0-M2)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pleiotropy (M3-M6)&quot;</span><span class="p">),</span>
-<span class="w">  </span><span class="n">True_Weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">no_pleiotropy_true_weight</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_true_weight</span><span class="p">),</span>
+<span class="w">  </span><span class="n">True_Proportion</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">no_pleiotropy_true_weight</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_true_weight</span><span class="p">),</span>
 <span class="w">  </span><span class="n">Posterior_Weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">no_pleiotropy_posterior_weight</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_posterior_weight</span><span class="p">),</span>
 <span class="w">  </span><span class="n">Difference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">no_pleiotropy_posterior_weight</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">no_pleiotropy_true_weight</span><span class="p">,</span>
 <span class="w">                 </span><span class="n">pleiotropy_posterior_weight</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">pleiotropy_true_weight</span><span class="p">)</span>
@@ -1368,12 +1260,12 @@ Pleiotropy Components (M3, M4, M5, M6):
 <span class="nf">cat</span><span class="p">(</span><span class="s">&quot;\n=== Mixture Model Weight Comparison ===\n&quot;</span><span class="p">)</span>
 <span class="n">mixture_model_comparison</span>
 
-<span class="c1"># Visualize component-level weights</span>
+<span class="c1"># Visualize component-level weights: prior vs posterior weights</span>
 <span class="n">weight_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
 <span class="w">  </span><span class="n">Component</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">Model</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
-<span class="w">  </span><span class="n">Weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">Mixture_Prop</span><span class="p">,</span><span class="w"> </span><span class="n">models_df</span><span class="o">$</span><span class="n">Posterior_Weight</span><span class="p">),</span>
-<span class="w">  </span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True Mixture Prop&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Posterior Weight&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">models_df</span><span class="p">)),</span>
-<span class="w">                </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True Mixture Prop&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Posterior Weight&quot;</span><span class="p">))</span>
+<span class="w">  </span><span class="n">Weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">prior_weights</span><span class="p">,</span><span class="w"> </span><span class="n">models_df</span><span class="o">$</span><span class="n">Posterior_Weight</span><span class="p">),</span>
+<span class="w">  </span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;prior weights&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;posterior weights&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">nrow</span><span class="p">(</span><span class="n">models_df</span><span class="p">)),</span>
+<span class="w">                </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;prior weights&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;posterior weights&quot;</span><span class="p">))</span>
 <span class="p">)</span>
 
 <span class="n">p2</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">weight_data</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Component</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weight</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Type</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
@@ -1382,12 +1274,11 @@ Pleiotropy Components (M3, M4, M5, M6):
 <span class="w">  </span><span class="nf">geom_text</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">Weight</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)),</span><span class="w"> </span>
 <span class="w">            </span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">position_dodge</span><span class="p">(</span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.8</span><span class="p">),</span><span class="w"> </span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-0.5</span><span class="p">,</span>
 <span class="w">            </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True Mixture Prop&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tomato&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Posterior Weight&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;prior weights&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tomato&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;posterior weights&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Component Weights: True vs Posterior&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;How well does the model estimate mixture proportions?&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Weight&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Component&quot;</span>
+<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Separate Model Weights: Prior vs Posterior&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;weights&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Model&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">ylim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">weight_data</span><span class="o">$</span><span class="n">Weight</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.15</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme_minimal</span><span class="p">(</span><span class="n">base_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
@@ -1404,16 +1295,38 @@ Pleiotropy Components (M3, M4, M5, M6):
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=== Mixture Model Weight Comparison ===
+</pre></div>
+</div>
+<div class="output text_html"><table class="dataframe">
+<caption>A data.frame: 2 × 4</caption>
+<thead>
+	<tr><th scope=col>Mixture_Model</th><th scope=col>True_Proportion</th><th scope=col>Posterior_Weight</th><th scope=col>Difference</th></tr>
+	<tr><th scope=col>&lt;chr&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th><th scope=col>&lt;dbl&gt;</th></tr>
+</thead>
+<tbody>
+	<tr><td>No Pleiotropy (M0-M2)</td><td>0.6</td><td>0.6178354</td><td> 0.0178354</td></tr>
+	<tr><td>Pleiotropy (M3-M6)   </td><td>0.4</td><td>0.3821646</td><td>-0.0178354</td></tr>
+</tbody>
+</table>
+</div><a class="reference internal image-reference" href="_images/bdbbed0c40b77e69a7648b7e585ef789fe70cb71b67f004caa6de482911f3fe6.png"><img alt="_images/bdbbed0c40b77e69a7648b7e585ef789fe70cb71b67f004caa6de482911f3fe6.png" src="_images/bdbbed0c40b77e69a7648b7e585ef789fe70cb71b67f004caa6de482911f3fe6.png" style="width: 420px; height: 420px;" />
+</a>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize mixture model level comparison</span>
+<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Visualize mixture model level comparison: Prior vs Posterior</span>
+<span class="c1"># Use PRIOR proportions for comparison (not true mixture proportions)</span>
+<span class="n">no_pleiotropy_prior_prop</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">prior_weights</span><span class="p">[</span><span class="n">models_df</span><span class="o">$</span><span class="n">Model</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">no_pleiotropy_components</span><span class="p">])</span>
+<span class="n">pleiotropy_prior_prop</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">prior_weights</span><span class="p">[</span><span class="n">models_df</span><span class="o">$</span><span class="n">Model</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">pleiotropy_components</span><span class="p">])</span>
+
 <span class="n">mixture_plot_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
 <span class="w">  </span><span class="n">Mixture_Model</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;No Pleiotropy\n(M0-M2)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pleiotropy\n(M3-M6)&quot;</span><span class="p">),</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
-<span class="w">  </span><span class="n">Weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">no_pleiotropy_true_weight</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_true_weight</span><span class="p">,</span>
+<span class="w">  </span><span class="n">Weight</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">no_pleiotropy_prior_prop</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_prior_prop</span><span class="p">,</span>
 <span class="w">             </span><span class="n">no_pleiotropy_posterior_weight</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_posterior_weight</span><span class="p">),</span>
-<span class="w">  </span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Posterior&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
-<span class="w">                </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Posterior&quot;</span><span class="p">))</span>
+<span class="w">  </span><span class="n">Type</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">factor</span><span class="p">(</span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;prior weights&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;posterior weights&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
+<span class="w">                </span><span class="n">levels</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;prior weights&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;posterior weights&quot;</span><span class="p">))</span>
 <span class="p">)</span>
 
 <span class="n">p3</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">mixture_plot_data</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Mixture_Model</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Weight</span><span class="p">,</span><span class="w"> </span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Type</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
@@ -1422,13 +1335,13 @@ Pleiotropy Components (M3, M4, M5, M6):
 <span class="w">  </span><span class="nf">geom_text</span><span class="p">(</span><span class="nf">aes</span><span class="p">(</span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">Weight</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)),</span><span class="w"> </span>
 <span class="w">            </span><span class="n">position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">position_dodge</span><span class="p">(</span><span class="n">width</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.8</span><span class="p">),</span><span class="w"> </span><span class="n">vjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">-0.5</span><span class="p">,</span>
 <span class="w">            </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">5</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;True&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tomato&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Posterior&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">scale_fill_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;prior weights&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;tomato&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;posterior weights&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;darkgreen&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Mixture Model Weight Comparison&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Aggregate Weight&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Comparison of Two Mixture Models&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Posterior weights&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Mixture Model&quot;</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">ylim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="m">1.1</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
+<span class="w">  </span><span class="nf">ylim</span><span class="p">(</span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">mixture_plot_data</span><span class="o">$</span><span class="n">Weight</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">1.2</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme_minimal</span><span class="p">(</span><span class="n">base_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
 <span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span>
@@ -1444,142 +1357,9 @@ Pleiotropy Components (M3, M4, M5, M6):
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create mixture distribution plots for height and weight effects</span>
-<span class="n">beta_range</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">seq</span><span class="p">(</span><span class="m">-3</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">,</span><span class="w"> </span><span class="n">length.out</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">500</span><span class="p">)</span>
-
-<span class="c1"># Function to compute mixture density using TRUE mixture proportions (not priors)</span>
-<span class="n">compute_mixture_density</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="kr">function</span><span class="p">(</span><span class="n">beta_vals</span><span class="p">,</span><span class="w"> </span><span class="n">components</span><span class="p">,</span><span class="w"> </span><span class="n">weights</span><span class="p">,</span><span class="w"> </span><span class="n">sigmas</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">  </span><span class="n">density</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">numeric</span><span class="p">(</span><span class="nf">length</span><span class="p">(</span><span class="n">beta_vals</span><span class="p">))</span>
-<span class="w">  </span><span class="kr">for</span><span class="w"> </span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nf">seq_along</span><span class="p">(</span><span class="n">components</span><span class="p">))</span><span class="w"> </span><span class="p">{</span>
-<span class="w">    </span><span class="n">comp</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">components</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
-<span class="w">    </span><span class="n">weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">weights</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span>
-<span class="w">    </span><span class="n">sigma</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">sigmas</span><span class="p">[</span><span class="n">comp</span><span class="p">]</span>
-<span class="w">    </span><span class="kr">if</span><span class="w"> </span><span class="p">(</span><span class="n">sigma</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="m">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
-<span class="w">      </span><span class="n">density</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">density</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">weight</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">dnorm</span><span class="p">(</span><span class="n">beta_vals</span><span class="p">,</span><span class="w"> </span><span class="n">mean</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0</span><span class="p">,</span><span class="w"> </span><span class="n">sd</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sigma</span><span class="p">)</span>
-<span class="w">    </span><span class="p">}</span>
-<span class="w">  </span><span class="p">}</span>
-<span class="w">  </span><span class="kr">return</span><span class="p">(</span><span class="n">density</span><span class="p">)</span>
-<span class="p">}</span>
-
-<span class="c1"># Compute densities for HEIGHT effects using TRUE mixture proportions</span>
-<span class="n">density_no_pleio_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">compute_mixture_density</span><span class="p">(</span>
-<span class="w">  </span><span class="n">beta_range</span><span class="p">,</span><span class="w"> </span><span class="n">no_pleiotropy_components</span><span class="p">,</span><span class="w"> </span>
-<span class="w">  </span><span class="n">models_df</span><span class="o">$</span><span class="n">Mixture_Prop</span><span class="p">,</span><span class="w"> </span><span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Height</span>
-<span class="p">)</span>
-
-<span class="n">density_pleio_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">compute_mixture_density</span><span class="p">(</span>
-<span class="w">  </span><span class="n">beta_range</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_components</span><span class="p">,</span>
-<span class="w">  </span><span class="n">models_df</span><span class="o">$</span><span class="n">Mixture_Prop</span><span class="p">,</span><span class="w"> </span><span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Height</span>
-<span class="p">)</span>
-
-<span class="c1"># Posterior weights</span>
-<span class="n">post_no_pleio_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">Posterior_Weight</span><span class="p">[</span><span class="n">models_df</span><span class="o">$</span><span class="n">Model</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">no_pleiotropy_components</span><span class="p">])</span>
-<span class="n">post_pleio_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">sum</span><span class="p">(</span><span class="n">models_df</span><span class="o">$</span><span class="n">Posterior_Weight</span><span class="p">[</span><span class="n">models_df</span><span class="o">$</span><span class="n">Model</span><span class="w"> </span><span class="o">%in%</span><span class="w"> </span><span class="n">pleiotropy_components</span><span class="p">])</span>
-
-<span class="c1"># Create HEIGHT plot</span>
-<span class="n">height_plot_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
-<span class="w">  </span><span class="n">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">beta_range</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
-<span class="w">  </span><span class="n">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">density_no_pleio_height</span><span class="p">,</span><span class="w"> </span><span class="n">density_pleio_height</span><span class="p">),</span>
-<span class="w">  </span><span class="n">mixture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;No Pleiotropy (M0-M2)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pleiotropy (M3-M6)&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">beta_range</span><span class="p">))</span>
-<span class="p">)</span>
-
-<span class="n">p_height</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">height_plot_data</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">density</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mixture</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.8</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;No Pleiotropy (M0-M2)&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#2E86AB&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                                </span><span class="s">&quot;Pleiotropy (M3-M6)&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#A23B72&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">height_plot_data</span><span class="o">$</span><span class="n">density</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">0.95</span><span class="p">,</span><span class="w"> </span>
-<span class="w">           </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;No Pleio Post: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">post_no_pleio_height</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">           </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#2E86AB&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">height_plot_data</span><span class="o">$</span><span class="n">density</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">0.85</span><span class="p">,</span><span class="w"> </span>
-<span class="w">           </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Pleio Post: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">post_pleio_height</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">           </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#A23B72&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Height Effect Mixture Distribution&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;True mixture densities (weighted by actual proportions) with posterior weights&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">expression</span><span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="n">height</span><span class="p">]),</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Density&quot;</span>
-<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">theme_minimal</span><span class="p">(</span><span class="n">base_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span>
-<span class="w">    </span><span class="n">plot.subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span>
-<span class="w">  </span><span class="p">)</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="n">p_height</span><span class="p">)</span>
-
-<span class="c1"># Compute densities for WEIGHT effects</span>
-<span class="n">density_no_pleio_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">compute_mixture_density</span><span class="p">(</span>
-<span class="w">  </span><span class="n">beta_range</span><span class="p">,</span><span class="w"> </span><span class="n">no_pleiotropy_components</span><span class="p">,</span>
-<span class="w">  </span><span class="n">models_df</span><span class="o">$</span><span class="n">Mixture_Prop</span><span class="p">,</span><span class="w"> </span><span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Weight</span>
-<span class="p">)</span>
-
-<span class="n">density_pleio_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">compute_mixture_density</span><span class="p">(</span>
-<span class="w">  </span><span class="n">beta_range</span><span class="p">,</span><span class="w"> </span><span class="n">pleiotropy_components</span><span class="p">,</span>
-<span class="w">  </span><span class="n">models_df</span><span class="o">$</span><span class="n">Mixture_Prop</span><span class="p">,</span><span class="w"> </span><span class="n">models_df</span><span class="o">$</span><span class="n">Prior_Sigma_Weight</span>
-<span class="p">)</span>
-
-<span class="c1"># Create WEIGHT plot</span>
-<span class="n">weight_plot_data</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">data.frame</span><span class="p">(</span>
-<span class="w">  </span><span class="n">beta</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="n">beta_range</span><span class="p">,</span><span class="w"> </span><span class="m">2</span><span class="p">),</span>
-<span class="w">  </span><span class="n">density</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="n">density_no_pleio_weight</span><span class="p">,</span><span class="w"> </span><span class="n">density_pleio_weight</span><span class="p">),</span>
-<span class="w">  </span><span class="n">mixture</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">rep</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;No Pleiotropy (M0-M2)&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Pleiotropy (M3-M6)&quot;</span><span class="p">),</span><span class="w"> </span><span class="n">each</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">length</span><span class="p">(</span><span class="n">beta_range</span><span class="p">))</span>
-<span class="p">)</span>
-
-<span class="n">p_weight</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="nf">ggplot</span><span class="p">(</span><span class="n">weight_plot_data</span><span class="p">,</span><span class="w"> </span><span class="nf">aes</span><span class="p">(</span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">beta</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">density</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">mixture</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">geom_line</span><span class="p">(</span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.8</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">scale_color_manual</span><span class="p">(</span><span class="n">values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">c</span><span class="p">(</span><span class="s">&quot;No Pleiotropy (M0-M2)&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#2E86AB&quot;</span><span class="p">,</span><span class="w"> </span>
-<span class="w">                                </span><span class="s">&quot;Pleiotropy (M3-M6)&quot;</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#A23B72&quot;</span><span class="p">))</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">weight_plot_data</span><span class="o">$</span><span class="n">density</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">0.95</span><span class="p">,</span><span class="w"> </span>
-<span class="w">           </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;No Pleio Post: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">post_no_pleio_height</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">           </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#2E86AB&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">annotate</span><span class="p">(</span><span class="s">&quot;text&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">,</span><span class="w"> </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">max</span><span class="p">(</span><span class="n">weight_plot_data</span><span class="o">$</span><span class="n">density</span><span class="p">)</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="m">0.85</span><span class="p">,</span><span class="w"> </span>
-<span class="w">           </span><span class="n">label</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">paste0</span><span class="p">(</span><span class="s">&quot;Pleio Post: &quot;</span><span class="p">,</span><span class="w"> </span><span class="nf">round</span><span class="p">(</span><span class="n">post_pleio_height</span><span class="p">,</span><span class="w"> </span><span class="m">3</span><span class="p">)),</span><span class="w"> </span>
-<span class="w">           </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;#A23B72&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">fontface</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">4.5</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">labs</span><span class="p">(</span>
-<span class="w">    </span><span class="n">title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Weight Effect Mixture Distribution&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;True mixture densities (weighted by actual proportions) with posterior weights&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">expression</span><span class="p">(</span><span class="n">beta</span><span class="p">[</span><span class="n">weight</span><span class="p">]),</span>
-<span class="w">    </span><span class="n">y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;Density&quot;</span>
-<span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">theme_minimal</span><span class="p">(</span><span class="n">base_size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">14</span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
-<span class="w">  </span><span class="nf">theme</span><span class="p">(</span>
-<span class="w">    </span><span class="n">plot.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">16</span><span class="p">),</span>
-<span class="w">    </span><span class="n">plot.subtitle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">hjust</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">0.5</span><span class="p">,</span><span class="w"> </span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">10</span><span class="p">),</span>
-<span class="w">    </span><span class="n">axis.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
-<span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">11</span><span class="p">,</span><span class="w"> </span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span>
-<span class="w">  </span><span class="p">)</span>
-
-<span class="nf">print</span><span class="p">(</span><span class="n">p_weight</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="n">Error</span> <span class="ow">in</span> <span class="k">if</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{:</span> <span class="n">missing</span> <span class="n">value</span> <span class="n">where</span> <span class="n">TRUE</span><span class="o">/</span><span class="n">FALSE</span> <span class="n">needed</span>
-<span class="ne">Traceback</span>:
-
-<span class="mi">1</span><span class="o">.</span> <span class="o">.</span><span class="n">handleSimpleError</span><span class="p">(</span><span class="n">function</span> <span class="p">(</span><span class="n">cnd</span><span class="p">)</span> 
- <span class="o">.</span> <span class="p">{</span>
- <span class="o">.</span>     <span class="n">watcher</span><span class="err">$</span><span class="n">capture_plot_and_output</span><span class="p">()</span>
- <span class="o">.</span>     <span class="n">cnd</span> <span class="o">&lt;-</span> <span class="n">sanitize_call</span><span class="p">(</span><span class="n">cnd</span><span class="p">)</span>
- <span class="o">.</span>     <span class="n">watcher</span><span class="err">$</span><span class="n">push</span><span class="p">(</span><span class="n">cnd</span><span class="p">)</span>
- <span class="o">.</span>     <span class="n">switch</span><span class="p">(</span><span class="n">on_error</span><span class="p">,</span> <span class="k">continue</span> <span class="o">=</span> <span class="n">invokeRestart</span><span class="p">(</span><span class="s2">&quot;eval_continue&quot;</span><span class="p">),</span> 
- <span class="o">.</span>         <span class="n">stop</span> <span class="o">=</span> <span class="n">invokeRestart</span><span class="p">(</span><span class="s2">&quot;eval_stop&quot;</span><span class="p">),</span> <span class="n">error</span> <span class="o">=</span> <span class="n">NULL</span><span class="p">)</span>
- <span class="o">.</span> <span class="p">},</span> <span class="s2">&quot;missing value where TRUE/FALSE needed&quot;</span><span class="p">,</span> <span class="n">base</span><span class="p">::</span><span class="n">quote</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">sigma</span> <span class="o">&gt;</span> 
- <span class="o">.</span>     <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
- <span class="o">.</span>     <span class="n">density</span> <span class="o">&lt;-</span> <span class="n">density</span> <span class="o">+</span> <span class="n">weight</span> <span class="o">*</span> <span class="n">dnorm</span><span class="p">(</span><span class="n">beta_vals</span><span class="p">,</span> <span class="n">mean</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> 
- <span class="o">.</span>         <span class="n">sd</span> <span class="o">=</span> <span class="n">sigma</span><span class="p">)</span>
- <span class="o">.</span> <span class="p">}))</span>
-</pre></div>
-</div>
+<a class="reference internal image-reference" href="_images/fa988b93b377f87b96bfd301694ecfa47cc8c6e8663276b2565ed5f24dc8103b.png"><img alt="_images/fa988b93b377f87b96bfd301694ecfa47cc8c6e8663276b2565ed5f24dc8103b.png" src="_images/fa988b93b377f87b96bfd301694ecfa47cc8c6e8663276b2565ed5f24dc8103b.png" style="width: 420px; height: 420px;" />
+</a>
 </div>
 </div>
 </section>
@@ -1646,7 +1426,9 @@ Pleiotropy Components (M3, M4, M5, M6):
 <span class="w">    </span><span class="n">axis.text.y</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
 <span class="w">    </span><span class="n">legend.title</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_blank</span><span class="p">(),</span>
 <span class="w">    </span><span class="n">legend.text</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_text</span><span class="p">(</span><span class="n">face</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bold&quot;</span><span class="p">),</span>
-<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span>
+<span class="w">    </span><span class="n">legend.position</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;bottom&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="n">panel.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;transparent&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">),</span>
+<span class="w">    </span><span class="n">plot.background</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">element_rect</span><span class="p">(</span><span class="n">fill</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;transparent&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">NA</span><span class="p">)</span>
 <span class="w">  </span><span class="p">)</span><span class="w"> </span><span class="o">+</span>
 <span class="w">  </span><span class="nf">guides</span><span class="p">(</span><span class="n">color</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">guide_legend</span><span class="p">(</span><span class="n">override.aes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nf">list</span><span class="p">(</span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">1.5</span><span class="p">)),</span>
 <span class="w">         </span><span class="n">linewidth</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;none&quot;</span><span class="p">)</span>
@@ -1666,6 +1448,10 @@ Pleiotropy Components (M3, M4, M5, M6):
 <span class="w">       </span><span class="n">dpi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="m">300</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="cell_output docutils container">
+<a class="reference internal image-reference" href="_images/be4719bd5fcbacc13abb96dad41863663e4cbeba80625b59263cbe03f885768f.png"><img alt="_images/be4719bd5fcbacc13abb96dad41863663e4cbeba80625b59263cbe03f885768f.png" src="_images/be4719bd5fcbacc13abb96dad41863663e4cbeba80625b59263cbe03f885768f.png" style="width: 420px; height: 420px;" />
+</a>
 </div>
 </div>
 </section>
@@ -1747,9 +1533,9 @@ Pleiotropy Components (M3, M4, M5, M6):
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior">Prior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#prior-distribution">Prior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-and-marginal-likelihood">Likelihood and Marginal Likelihood</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior">Posterior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#posterior-distribution">Posterior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#weight-estimation-evaluation">Weight Estimation Evaluation</a></li>
 </ul>
 </li>

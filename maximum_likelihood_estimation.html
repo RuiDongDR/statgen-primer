@@ -582,17 +582,17 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-allele-frequency">Example 1 – Allele Frequency</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-data">Setup Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-likelihood-and-log-likelihood-functions">Define Likelihood and Log-Likelihood Functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-mle">Calculate MLE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-likelihood-and-log-likelihood">Visualize Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-and-log-likelihood">Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mle">MLE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">Visualization</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-genetic-effect">Example 2 – Genetic Effect</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Define Likelihood and Log-Likelihood Functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Calculate MLE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Visualize Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">MLE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Visualization</a></li>
 </ul>
 </li>
 </ul>
@@ -681,8 +681,8 @@ document.write(`
 <h2>Example 1 – Allele Frequency<a class="headerlink" href="#example-1-allele-frequency" title="Link to this heading">#</a></h2>
 <p>We want to estimate the frequency of the T allele in the population. In <a class="reference external" href="https://statfungen.github.io/statgen-primer/minor_allele_frequency.html">Lecture: minor allele frequency</a>, we used simple counting. However, geneticists typically prefer MLE because it handles missing data naturally and provides more stable estimates with small sample sizes.</p>
 <p><strong>Question</strong>: What is the most plausible frequency of the T allele that would generate our observed genotypes?</p>
-<section id="setup-data">
-<h3>Setup Data<a class="headerlink" href="#setup-data" title="Link to this heading">#</a></h3>
+<section id="setup">
+<h3>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clear the environment</span>
@@ -700,8 +700,8 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="define-likelihood-and-log-likelihood-functions">
-<h3>Define Likelihood and Log-Likelihood Functions<a class="headerlink" href="#define-likelihood-and-log-likelihood-functions" title="Link to this heading">#</a></h3>
+<section id="likelihood-and-log-likelihood">
+<h3>Likelihood and Log-Likelihood<a class="headerlink" href="#likelihood-and-log-likelihood" title="Link to this heading">#</a></h3>
 <p>Let <span class="math notranslate nohighlight">\(f_T\)</span> denote the frequency of the <code class="docutils literal notranslate"><span class="pre">T</span></code> allele. We observe genotype data from 5 individuals: CC, TT, CT, CC, and CC. This corresponds to 3 <code class="docutils literal notranslate"><span class="pre">T</span></code> alleles out of 10 total alleles (since each individual carries 2 alleles).</p>
 <p>Under Hardy-Weinberg equilibrium, the genotype probabilities are:</p>
 <ul class="simple">
@@ -737,8 +737,8 @@ document.write(`
 </div>
 </div>
 </section>
-<section id="calculate-mle">
-<h3>Calculate MLE<a class="headerlink" href="#calculate-mle" title="Link to this heading">#</a></h3>
+<section id="mle">
+<h3>MLE<a class="headerlink" href="#mle" title="Link to this heading">#</a></h3>
 <p>We can find the MLE using R’s <code class="docutils literal notranslate"><span class="pre">optimize</span></code> function and verify it matches the analytical solution.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -777,8 +777,8 @@ document.write(`
 \frac{d^2\ell}{df_T^2} = -\frac{3}{f_T^2} - \frac{7}{(1-f_T)^2} &lt; 0 \text{ for } f_T \in (0,1)
 \]</div>
 </section>
-<section id="visualize-likelihood-and-log-likelihood">
-<h3>Visualize Likelihood and Log-Likelihood<a class="headerlink" href="#visualize-likelihood-and-log-likelihood" title="Link to this heading">#</a></h3>
+<section id="visualization">
+<h3>Visualization<a class="headerlink" href="#visualization" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate data for plotting</span>
@@ -904,7 +904,7 @@ document.write(`
 <p>In the example in <a class="reference external" href="https://statfungen.github.io/statgen-primer/likelihood.html">Lecture: likelihood</a>, we see that Model 2 (<span class="math notranslate nohighlight">\(\beta = 0.5\)</span>) performs better than both Model 1 (<span class="math notranslate nohighlight">\(\beta = 0\)</span>) and Model 3 (<span class="math notranslate nohighlight">\(\beta = 1.0\)</span>). But this raises an interesting question: we only tested three specific values. What if the optimal <span class="math notranslate nohighlight">\(\beta\)</span> is somewhere between 0.5 and 1.0, or maybe 0.4 or 0.6?</p>
 <p>Instead of guessing more values to test, we can use MLE to find <span class="math notranslate nohighlight">\(\hat{\beta}\)</span> that maximizes the likelihood function. Then we can compare this optimal estimate to our models - particularly the null model (<span class="math notranslate nohighlight">\(\beta = 0\)</span>), which is often of special interest in genetics because it represents “no genetic effect.”</p>
 <section id="id1">
-<h3>Setup Data<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>Setup<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clear the environment</span>
@@ -942,7 +942,7 @@ document.write(`
 </div>
 </section>
 <section id="id2">
-<h3>Define Likelihood and Log-Likelihood Functions<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
+<h3>Likelihood and Log-Likelihood<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Likelihood function for normal distribution</span>
@@ -966,7 +966,7 @@ document.write(`
 </div>
 </section>
 <section id="id3">
-<h3>Calculate MLE<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
+<h3>MLE<a class="headerlink" href="#id3" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Find the MLE by optimizing the log-likelihood function</span>
@@ -1013,7 +1013,7 @@ document.write(`
 </div>
 </section>
 <section id="id4">
-<h3>Visualize Likelihood and Log-Likelihood<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
+<h3>Visualization<a class="headerlink" href="#id4" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate data for plotting</span>
@@ -1204,17 +1204,17 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-allele-frequency">Example 1 – Allele Frequency</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-data">Setup Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#define-likelihood-and-log-likelihood-functions">Define Likelihood and Log-Likelihood Functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#calculate-mle">Calculate MLE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualize-likelihood-and-log-likelihood">Visualize Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#likelihood-and-log-likelihood">Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#mle">MLE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#visualization">Visualization</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-genetic-effect">Example 2 – Genetic Effect</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup Data</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Define Likelihood and Log-Likelihood Functions</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">Calculate MLE</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Visualize Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Likelihood and Log-Likelihood</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id3">MLE</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id4">Visualization</a></li>
 </ul>
 </li>
 </ul>

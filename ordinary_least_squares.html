@@ -583,7 +583,13 @@ document.write(`
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-regression">OLS Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analytical-calculation-of-beta">Analytical Calculation of <span class="math notranslate nohighlight">\(\beta\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-results">Comparison of Results</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#supplementary">Supplementary</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Graphical Summary</a></li>
 </ul>
@@ -697,6 +703,8 @@ E[\hat{\beta}_{\text{OLS}}] = \beta
 <h1>Example<a class="headerlink" href="#example" title="Link to this heading">#</a></h1>
 <p>In our toy example data of 5 individuals, now say we have also observed the height information for the 5 individuals. How do we actually perform OLS analysis to answer the question: <em>do any of these variants actually influence height?</em></p>
 <p>To begin with, we still converted those nucleotides into numbers as we did in <a class="reference external" href="https://statfungen.github.io/statgen-primer/genotype_coding.html">Lecture: genotype coding</a>, and after the transformation of the genotypes using an additive model, we apply our OLS formula both manually and using R’s built-in function. This will show you exactly how that geometric intuition - the projection and alignment between genotype and phenotype vectors - translates into real code and results.</p>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clear the environment</span>
@@ -749,6 +757,9 @@ E[\hat{\beta}_{\text{OLS}}] = \beta
 </div>
 </div>
 </div>
+</section>
+<section id="ols-regression">
+<h2>OLS Regression<a class="headerlink" href="#ols-regression" title="Link to this heading">#</a></h2>
 <p>We perform OLS analysis on each single SNP using <code class="docutils literal notranslate"><span class="pre">lm</span></code> function in R:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -791,6 +802,9 @@ E[\hat{\beta}_{\text{OLS}}] = \beta
 </table>
 </div></div>
 </div>
+</section>
+<section id="analytical-calculation-of-beta">
+<h2>Analytical Calculation of <span class="math notranslate nohighlight">\(\beta\)</span><a class="headerlink" href="#analytical-calculation-of-beta" title="Link to this heading">#</a></h2>
 <p>Or we can use the formula to calculate <span class="math notranslate nohighlight">\(\beta\)</span> directly:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -811,6 +825,9 @@ E[\hat{\beta}_{\text{OLS}}] = \beta
 </div>
 </div>
 </div>
+</section>
+<section id="comparison-of-results">
+<h2>Comparison of Results<a class="headerlink" href="#comparison-of-results" title="Link to this heading">#</a></h2>
 <p>We compare the results calculated from the <code class="docutils literal notranslate"><span class="pre">lm</span></code> function and from the formula, and as expected they are the same:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -834,6 +851,7 @@ E[\hat{\beta}_{\text{OLS}}] = \beta
 </table>
 </div></div>
 </div>
+</section>
 </section>
 <section class="tex2jax_ignore mathjax_ignore" id="supplementary">
 <h1>Supplementary<a class="headerlink" href="#supplementary" title="Link to this heading">#</a></h1>
@@ -966,7 +984,13 @@ E[\hat{\beta}_{\text{OLS}}] = \beta
 </ul>
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a></li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ols-regression">OLS Regression</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#analytical-calculation-of-beta">Analytical Calculation of <span class="math notranslate nohighlight">\(\beta\)</span></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#comparison-of-results">Comparison of Results</a></li>
+</ul>
+</li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#supplementary">Supplementary</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Graphical Summary</a></li>
 </ul>

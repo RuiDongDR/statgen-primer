@@ -588,10 +588,10 @@ document.write(`
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-simulated-data">Generate Simulated Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-model-to-our-data">Applying the Model to Our Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Prior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-covariance-matrices">Estimating the Covariance Matrices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-posterior">Computing the Posterior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Posterior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-bayesian-update">Visualizing the Bayesian Update</a></li>
 </ul>
 </li>
@@ -804,8 +804,8 @@ T_1 = \sum_{i=1}^N X_i^2, \quad \mathbf{T}_2 = \sum_{i=1}^N X_i \mathbf{Y}_i = \
 \end{align}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(\boldsymbol{\beta} = \begin{pmatrix} \beta_a \\ \beta_b \end{pmatrix}\)</span> represents the joint effects on traits a (height) and b (weight).</p>
-<section id="generate-simulated-data">
-<h2>Generate Simulated Data<a class="headerlink" href="#generate-simulated-data" title="Link to this heading">#</a></h2>
+<section id="setup">
+<h2>Setup<a class="headerlink" href="#setup" title="Link to this heading">#</a></h2>
 <p>We use the same genotype data from the <a class="reference external" href="https://statfungen.github.io/statgen-primer/Bayesian_normal_mean_model.html#">Lecture: Bayesian normal mean model</a>, but now generate two correlated traits (height and weight) for each individual.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -869,15 +869,15 @@ The following object is masked from ‘package:graphics’:
 </div>
 </div>
 </div>
-</section>
-<section id="applying-the-model-to-our-data">
-<h2>Applying the Model to Our Data<a class="headerlink" href="#applying-the-model-to-our-data" title="Link to this heading">#</a></h2>
 <p>To apply the Bayesian multivariate normal mean model, we need to specify the <strong>prior distribution</strong> for the effect vector <span class="math notranslate nohighlight">\(\boldsymbol{\beta}\)</span> and estimate the covariance matrices. We assume the prior mean is zero (no prior expectation about effects):</p>
 <div class="math notranslate nohighlight">
 \[\begin{split}
 \boldsymbol{\beta} \sim \mathcal{N}(\boldsymbol{\beta}_0, \boldsymbol{\Sigma}_0) \quad \text{where } \boldsymbol{\beta}_0 = \begin{pmatrix} 0 \\ 0 \end{pmatrix}
 \end{split}\]</div>
 <p>The <strong>prior covariance</strong> <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}_0\)</span> quantifies our joint uncertainty about both effects, and the <strong>residual covariance</strong> <span class="math notranslate nohighlight">\(\boldsymbol{\Sigma}\)</span> captures the correlation between traits. We will estimate both from the data using maximum likelihood.</p>
+</section>
+<section id="id1">
+<h2>Prior Distribution<a class="headerlink" href="#id1" title="Link to this heading">#</a></h2>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define prior distribution</span>
@@ -945,8 +945,8 @@ The following object is masked from ‘package:graphics’:
 </div></div>
 </div>
 </section>
-<section id="computing-the-posterior">
-<h2>Computing the Posterior<a class="headerlink" href="#computing-the-posterior" title="Link to this heading">#</a></h2>
+<section id="id2">
+<h2>Posterior Distribution<a class="headerlink" href="#id2" title="Link to this heading">#</a></h2>
 <p>With the estimated covariance matrices, we can now compute the posterior distribution using the formulas from the Technical Details section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1206,10 +1206,10 @@ Posterior marginal variances: 0.0984 0.1021
 </li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#generate-simulated-data">Generate Simulated Data</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#applying-the-model-to-our-data">Applying the Model to Our Data</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup">Setup</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Prior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#estimating-the-covariance-matrices">Estimating the Covariance Matrices</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#computing-the-posterior">Computing the Posterior</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">Posterior Distribution</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#visualizing-the-bayesian-update">Visualizing the Bayesian Update</a></li>
 </ul>
 </li>

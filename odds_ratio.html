@@ -582,13 +582,13 @@ document.write(`
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-hwe">Example 1 – HWE</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-chi-square-test-directly-on-the-2-times-2-table">Method 1: Chi-square test directly on the <span class="math notranslate nohighlight">\(2\times 2\)</span> table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-traditional-hwe-chi-square-test-on-genotype-counts">Method 2: Traditional HWE chi-square test on genotype counts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-1-chi-square-test-on-a-2-times-2-table">Analysis 1: Chi-square Test on a <span class="math notranslate nohighlight">\(2\times 2\)</span> Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-2-traditional-hwe-chi-square-test-on-genotype-counts">Analysis 2: Traditional HWE chi-square Test on Genotype Counts</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-gwas">Example 2 – GWAS</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Method 1: Chi-square test directly on the <span class="math notranslate nohighlight">\(2\times 2\)</span> table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-logistic-regression">Method 2 - Logistic Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Analysis 1: Chi-square Test on a <span class="math notranslate nohighlight">\(2\times 2\)</span> Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-2-logistic-regression">Analysis 2: Logistic Regression</a></li>
 </ul>
 </li>
 </ul>
@@ -812,8 +812,8 @@ f_a = 0.0459
 </div>
 <p>The odds ratio tells us the magnitude of deviation from independence, but doesn’t tell us if it’s statistically significant. Under HWE, the odds ratio should equal 1.0, meaning maternal and paternal allele choices are independent.</p>
 <p>To determine significance, we need a chi-square test that accounts for sample size and expected sampling variability. We can do this in two equivalent ways:</p>
-<section id="method-1-chi-square-test-directly-on-the-2-times-2-table">
-<h3>Method 1: Chi-square test directly on the <span class="math notranslate nohighlight">\(2\times 2\)</span> table<a class="headerlink" href="#method-1-chi-square-test-directly-on-the-2-times-2-table" title="Link to this heading">#</a></h3>
+<section id="analysis-1-chi-square-test-on-a-2-times-2-table">
+<h3>Analysis 1: Chi-square Test on a <span class="math notranslate nohighlight">\(2\times 2\)</span> Table<a class="headerlink" href="#analysis-1-chi-square-test-on-a-2-times-2-table" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Test independence using chi-square test on the 2x2 table</span>
@@ -836,8 +836,8 @@ X-squared = 0.83095, df = 1, p-value = 0.362
 </div>
 </div>
 </section>
-<section id="method-2-traditional-hwe-chi-square-test-on-genotype-counts">
-<h3>Method 2: Traditional HWE chi-square test on genotype counts<a class="headerlink" href="#method-2-traditional-hwe-chi-square-test-on-genotype-counts" title="Link to this heading">#</a></h3>
+<section id="analysis-2-traditional-hwe-chi-square-test-on-genotype-counts">
+<h3>Analysis 2: Traditional HWE chi-square Test on Genotype Counts<a class="headerlink" href="#analysis-2-traditional-hwe-chi-square-test-on-genotype-counts" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Calculate expected genotype counts under HWE</span>
@@ -952,7 +952,7 @@ p-value = 3.619985e-01
 </div></div>
 </div>
 <section id="id1">
-<h3>Method 1: Chi-square test directly on the <span class="math notranslate nohighlight">\(2\times 2\)</span> table<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
+<h3>Analysis 1: Chi-square Test on a <span class="math notranslate nohighlight">\(2\times 2\)</span> Table<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
 <p>For this example, let’s focus on <strong>Variant 1</strong> and create a contingency table.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1017,8 +1017,8 @@ X-squared = 0.13889, df = 1, p-value = 0.7094
 </div>
 </div>
 </section>
-<section id="method-2-logistic-regression">
-<h3>Method 2 - Logistic Regression<a class="headerlink" href="#method-2-logistic-regression" title="Link to this heading">#</a></h3>
+<section id="analysis-2-logistic-regression">
+<h3>Analysis 2: Logistic Regression<a class="headerlink" href="#analysis-2-logistic-regression" title="Link to this heading">#</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-r notranslate"><div class="highlight"><pre><span></span><span class="c1"># Run logistic regression</span>
@@ -1214,13 +1214,13 @@ Number of Fisher Scoring iterations: 4
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#related-topics">Related Topics</a></li>
 <li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#example">Example</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-1-hwe">Example 1 – HWE</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-1-chi-square-test-directly-on-the-2-times-2-table">Method 1: Chi-square test directly on the <span class="math notranslate nohighlight">\(2\times 2\)</span> table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-traditional-hwe-chi-square-test-on-genotype-counts">Method 2: Traditional HWE chi-square test on genotype counts</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-1-chi-square-test-on-a-2-times-2-table">Analysis 1: Chi-square Test on a <span class="math notranslate nohighlight">\(2\times 2\)</span> Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-2-traditional-hwe-chi-square-test-on-genotype-counts">Analysis 2: Traditional HWE chi-square Test on Genotype Counts</a></li>
 </ul>
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#example-2-gwas">Example 2 – GWAS</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Method 1: Chi-square test directly on the <span class="math notranslate nohighlight">\(2\times 2\)</span> table</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#method-2-logistic-regression">Method 2 - Logistic Regression</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Analysis 1: Chi-square Test on a <span class="math notranslate nohighlight">\(2\times 2\)</span> Table</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#analysis-2-logistic-regression">Analysis 2: Logistic Regression</a></li>
 </ul>
 </li>
 </ul>
